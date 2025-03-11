@@ -1,9 +1,9 @@
 import { StyleSheet, View, Text } from "react-native";
 
-export default function TabTwoScreen() {
+export default function App() {
 	return (
 		<View style={styles.container}>
-			<Text>Explore</Text>
+			<Text>Open up App.tsx to start working on your app!</Text>
 		</View>
 	);
 }
@@ -11,5 +11,8 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		backgroundColor: "#fff",
+		alignItems: "center",
+		justifyContent: "center",
 	},
 });
