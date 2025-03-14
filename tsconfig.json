@@ -6,7 +6,9 @@
     "paths": {
       "@/components/*": ["components/*"],
       "@/hooks/*": ["hooks/*"],
+      "@/context/*": ["context/*"],
       "@/constants/*": ["constants/*"],
+      "@/lib/*": ["lib/*"],
     }
   },
   "include": [
