@@ -1,13 +1,18 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { router } from "expo-router";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import * as Linking from "expo-linking";
 
 interface SessionContextType {
 	session: Session | null;
+	signOut: () => Promise<void>;
 }
 
-const SessionContext = createContext<SessionContextType>({ session: null });
+const SessionContext = createContext<SessionContextType>({
+	session: null,
+	signOut: async () => {},
+});
 
 export const useSession = () => useContext(SessionContext);
 
@@ -33,6 +38,17 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 			}
 		};
 	}, []);
+
+	async function signOut() {
+		const { error } = await supabase.auth.signOut();
+
+		if (error) {
+			console.error("Error signing out:", error);
+		} else {
+			setSession(null);
+			router.replace("/");
+		}
+	}
 
 	async function handleDeepLink(event: { url: string }) {
 		const url = event.url;
@@ -74,16 +90,20 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 		const subscription = Linking.addEventListener("url", handleDeepLink);
 
 		// Check if the app was opened with a deep link
-		Linking.getInitialURL().then((url) => {
-			if (url) handleDeepLink({ url });
-		});
+		Linking.getInitialURL()
+			.then((url) => {
+				if (url) handleDeepLink({ url });
+			})
+			.catch((error) => {
+				console.error("Error getting initial URL:", error);
+			});
 
 		// Cleanup the subscription on unmount
 		return () => subscription.remove();
-	}, [setSession]);
+	}, []);
 
 	return (
-		<SessionContext.Provider value={{ session }}>
+		<SessionContext.Provider value={{ session, signOut }}>
 			{children}
 		</SessionContext.Provider>
 	);
