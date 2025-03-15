@@ -1,9 +1,9 @@
 import { StyleSheet, View, Text } from "react-native";
 
-export default function TabTwoScreen() {
+export default function ChartsScreen() {
 	return (
 		<View style={styles.container}>
-			<Text>Explore</Text>
+			<Text>ChartsScreen</Text>
 		</View>
 	);
 }
