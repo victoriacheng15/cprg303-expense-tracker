@@ -1,15 +1,12 @@
 import { StyleSheet, View, Text } from "react-native";
+import { globalStyle } from "@/constants/";
 
 export default function ChartsScreen() {
 	return (
-		<View style={styles.container}>
+		<View style={globalStyle.container}>
 			<Text>ChartsScreen</Text>
 		</View>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});
+const styles = StyleSheet.create({});
