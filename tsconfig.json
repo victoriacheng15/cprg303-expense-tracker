@@ -7,7 +7,7 @@
       "@/components/*": ["components/*"],
       "@/hooks/*": ["hooks/*"],
       "@/context/*": ["context/*"],
-      "@/constants/*": ["constants/*"],
+      "@/constants/": ["constants/index"],
       "@/lib/*": ["lib/*"],
     }
   },

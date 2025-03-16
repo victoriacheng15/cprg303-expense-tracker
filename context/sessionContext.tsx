@@ -4,11 +4,6 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import * as Linking from "expo-linking";
 
-interface SessionContextType {
-	session: Session | null;
-	signOut: () => Promise<void>;
-}
-
 const SessionContext = createContext<SessionContextType>({
 	session: null,
 	signOut: async () => {},
@@ -16,7 +11,7 @@ const SessionContext = createContext<SessionContextType>({
 
 export const useSession = () => useContext(SessionContext);
 
-export function SessionProvider({ children }: { children: React.ReactNode }) {
+export function SessionProvider({ children }: ChildrenProps) {
 	const [session, setSession] = useState<Session | null>(null);
 
 	// Fetch the initial session and listen for auth state changes
@@ -85,6 +80,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	// Handle deep linking for Supabase magic links
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		// Listen for deep link events
 		const subscription = Linking.addEventListener("url", handleDeepLink);
