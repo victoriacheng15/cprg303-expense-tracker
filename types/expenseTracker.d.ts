@@ -54,12 +54,16 @@ interface Transaction {
 	note: string;
 }
 
+interface DatePickerConfig {
+	show: boolean;
+	mode: ModeTypes;
+}
+
 interface TransactionModalProps {
 	modalVisible: boolean;
 	setModalVisible: (visible: boolean) => void;
 	showDatepicker: () => void;
-	show: boolean;
-	mode: ModeTypes;
+	datePickerConfig: DatePickerConfig;
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	onDateChange: (event: any, selectedDate?: Date) => void;
 	transactionItem: Transaction;
