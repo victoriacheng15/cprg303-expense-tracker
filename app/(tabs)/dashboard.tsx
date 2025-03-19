@@ -1,12 +1,95 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 import { globalStyle } from "@/constants/";
+import { useAddTransaction } from "@/hooks/useAddTransaction";
+import TransactionItem from "@/components/TransactionItem";
+import ModalButton from "@/components/ModalButton";
+import TransactionModal from "@/components/TransactionModal";
 
 export default function Dashboard() {
+	const {
+		modalVisible,
+		setModalVisible,
+		isDatePickerVisible, // waiting to fix
+		setDatePickerVisible, // waiting to fix
+		handleDateChange, // waiting to fix
+		name,
+		setName,
+		amount,
+		setAmount,
+		category,
+		setCategory,
+		date,
+		setDate,
+		note,
+		setNote,
+		handleAddTransaction,
+		transactions,
+	} = useAddTransaction();
+	const incomeCategories = ["Salary", "Freelance", "Investment"];
+
 	return (
 		<View style={globalStyle.container}>
-			<Text>Dashboard</Text>
+			<View style={styles.transactionContainer}>
+				<Text style={styles.heading}>Recent Transactions</Text>
+
+				{/* List of Transactions */}
+				<FlatList
+					data={transactions}
+					keyExtractor={(item) => item.id}
+					renderItem={({ item }) => {
+						const { category, name, amount } = item;
+						// Determine if the transaction is income or expense
+						const isIncome = incomeCategories.includes(category);
+
+						return (
+							<TransactionItem
+								isIncome={isIncome}
+								name={name}
+								category={category}
+								amountText={isIncome ? `+$${amount}` : `-$${Math.abs(amount)}`}
+							/>
+						);
+					}}
+				/>
+			</View>
+
+			{/* Button to Open the Modal */}
+			<ModalButton onPress={() => setModalVisible(true)} />
+
+			{/* Modal for Adding a New Transaction */}
+			<TransactionModal
+				modalVisible={modalVisible}
+				setModalVisible={setModalVisible}
+				datePickerVisible={isDatePickerVisible}
+				setDatePickerVisible={setDatePickerVisible}
+				handleDateChange={handleDateChange}
+				name={name}
+				setName={setName}
+				amount={amount}
+				setAmount={setAmount}
+				category={category}
+				setCategory={setCategory}
+				date={date}
+				setDate={setDate}
+				note={note}
+				setNote={setNote}
+				handleAddTransaction={handleAddTransaction}
+			/>
 		</View>
 	);
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	transactionContainer: {
+		flex: 1,
+		backgroundColor: "#fff",
+		width: "100%",
+		padding: 20,
+		borderRadius: 10,
+	},
+	heading: {
+		fontSize: 20,
+		fontWeight: "bold",
+		marginBottom: 16,
+	},
+});
