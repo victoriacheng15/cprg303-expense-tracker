@@ -44,12 +44,16 @@ interface TransactionItemProps {
 	amountText: string;
 }
 
+type ModeTypes = "date" | "time" | "datetime" | "countdown";
+
 interface TransactionModalProps {
 	modalVisible: boolean;
 	setModalVisible: (visible: boolean) => void;
-	datePickerVisible: boolean;
-	setDatePickerVisible: (visible: boolean) => void;
-	handleDateChange: (selectedDate: Date | undefined) => void;
+	showDatepicker: () => void;
+	show: boolean;
+	mode: ModeTypes;
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	onDateChange: (event: any, selectedDate?: Date) => void;
 	name: string;
 	setName: (name: string) => void;
 	amount: string;
