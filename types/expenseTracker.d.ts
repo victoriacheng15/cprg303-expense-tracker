@@ -46,6 +46,14 @@ interface TransactionItemProps {
 
 type ModeTypes = "date" | "time" | "datetime" | "countdown";
 
+interface Transaction {
+	category: string;
+	name: string;
+	amount: number;
+	date: string;
+	note: string;
+}
+
 interface TransactionModalProps {
 	modalVisible: boolean;
 	setModalVisible: (visible: boolean) => void;
@@ -54,15 +62,7 @@ interface TransactionModalProps {
 	mode: ModeTypes;
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	onDateChange: (event: any, selectedDate?: Date) => void;
-	name: string;
-	setName: (name: string) => void;
-	amount: string;
-	setAmount: (amount: string) => void;
-	category: string;
-	setCategory: (category: string) => void;
-	date: string;
-	setDate: (date: string) => void;
-	note: string;
-	setNote: (note: string) => void;
+	transactionItem: Transaction;
+	updateTransaction: (field: keyof Transaction, value: string) => void;
 	handleAddTransaction: () => void;
 }
