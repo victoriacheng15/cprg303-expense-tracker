@@ -5,11 +5,16 @@ export function useAddTransaction() {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [show, setShow] = useState(false);
 	const [mode, setMode] = useState<ModeTypes>("date");
-	const [name, setName] = useState("");
-	const [amount, setAmount] = useState("");
-	const [category, setCategory] = useState("");
-	const [date, setDate] = useState("");
-	const [note, setNote] = useState("");
+
+	const [transactionItem, setTransactionItem] = useState<Transaction>({
+		name: "",
+		amount: 0,
+		category: "",
+		date: "",
+		note: "",
+	});
+
+	const { name, amount, category, date, note } = transactionItem;
 
 	// Sample data for transactions
 	const transactions = [
@@ -97,7 +102,27 @@ export function useAddTransaction() {
 
 		// Format the date as YYYY-MM-DD
 		const formattedDate = currentDate.toISOString().split("T")[0];
-		setDate(formattedDate);
+		// setDate(formattedDate);
+		setTransactionItem((prev) => ({ ...prev, date: formattedDate }));
+	}
+
+	// Helper function to update a specific field in the transaction
+	function updateTransaction(field: keyof Transaction, value: string) {
+		setTransactionItem((prev) => ({
+			...prev,
+			[field]: value,
+		}));
+	}
+
+	// Reset transaction form
+	function resetTransaction() {
+		setTransactionItem({
+			name: "",
+			amount: 0,
+			category: "",
+			date: "",
+			note: "",
+		});
 	}
 
 	function handleAddTransaction() {
@@ -110,22 +135,14 @@ export function useAddTransaction() {
 		// Add the new transaction to the list (or send to the backend)
 		const newTransaction = {
 			id: String(transactions.length + 1), // Temporary ID
-			category,
-			name,
+			...transactionItem,
 			amount: Number(amount),
-			date,
-			note,
 		};
 
 		console.log("New Transaction:", newTransaction);
 
 		// Close the modal and reset the form
-		setModalVisible(false);
-		setName("");
-		setAmount("");
-		setCategory("");
-		setDate("");
-		setNote("");
+		resetTransaction();
 	}
 
 	return {
@@ -135,16 +152,9 @@ export function useAddTransaction() {
 		show,
 		mode,
 		onDateChange,
-		name,
-		setName,
-		amount,
-		setAmount,
-		category,
-		setCategory,
-		date,
-		setDate,
-		note,
-		setNote,
+		transactionItem,
+		updateTransaction,
+		resetTransaction,
 		handleAddTransaction,
 		transactions,
 	};
