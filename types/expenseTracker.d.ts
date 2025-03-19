@@ -36,3 +36,29 @@ interface ColorsContextType {
 		};
 	};
 }
+
+interface TransactionItemProps {
+	isIncome: boolean;
+	name: string;
+	category: string;
+	amountText: string;
+}
+
+interface TransactionModalProps {
+	modalVisible: boolean;
+	setModalVisible: (visible: boolean) => void;
+	datePickerVisible: boolean;
+	setDatePickerVisible: (visible: boolean) => void;
+	handleDateChange: (selectedDate: Date | undefined) => void;
+	name: string;
+	setName: (name: string) => void;
+	amount: string;
+	setAmount: (amount: string) => void;
+	category: string;
+	setCategory: (category: string) => void;
+	date: string;
+	setDate: (date: string) => void;
+	note: string;
+	setNote: (note: string) => void;
+	handleAddTransaction: () => void;
+}
