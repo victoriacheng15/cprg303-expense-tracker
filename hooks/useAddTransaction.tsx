@@ -3,9 +3,10 @@ import { Alert } from "react-native";
 
 export function useAddTransaction() {
 	const [modalVisible, setModalVisible] = useState(false);
-	const [show, setShow] = useState(false);
-	const [mode, setMode] = useState<ModeTypes>("date");
-
+	const [datePickerConfig, setDatePickerConfig] = useState<DatePickerConfig>({
+		show: false,
+		mode: "date",
+	});
 	const [transactionItem, setTransactionItem] = useState<Transaction>({
 		name: "",
 		amount: 0,
@@ -91,14 +92,13 @@ export function useAddTransaction() {
 	];
 
 	function showDatepicker() {
-		setShow(true);
-		setMode("date");
+		setDatePickerConfig((prev) => ({ ...prev, show: true }));
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	function onDateChange(_: any, selectedDate?: Date) {
 		const currentDate = selectedDate || (date ? new Date(date) : new Date());
-		setShow(false);
+		setDatePickerConfig((prev) => ({ ...prev, show: false }));
 
 		// Format the date as YYYY-MM-DD
 		const formattedDate = currentDate.toISOString().split("T")[0];
@@ -149,8 +149,7 @@ export function useAddTransaction() {
 		modalVisible,
 		setModalVisible,
 		showDatepicker,
-		show,
-		mode,
+		datePickerConfig,
 		onDateChange,
 		transactionItem,
 		updateTransaction,

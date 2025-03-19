@@ -5,14 +5,14 @@ export default function TransactionModal({
 	modalVisible,
 	setModalVisible,
 	showDatepicker,
-	show,
-	mode,
+	datePickerConfig,
 	onDateChange,
 	transactionItem,
 	updateTransaction,
 	handleAddTransaction,
 }: TransactionModalProps) {
 	const { name, amount, category, date, note } = transactionItem;
+	const { show, mode } = datePickerConfig;
 
 	return (
 		<Modal visible={modalVisible} animationType="slide" transparent={true}>

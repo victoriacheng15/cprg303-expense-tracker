@@ -10,8 +10,7 @@ export default function Dashboard() {
 		modalVisible,
 		setModalVisible,
 		showDatepicker,
-		show,
-		mode,
+		datePickerConfig,
 		onDateChange,
 		transactionItem,
 		updateTransaction,
@@ -54,8 +53,7 @@ export default function Dashboard() {
 				modalVisible={modalVisible}
 				setModalVisible={setModalVisible}
 				showDatepicker={showDatepicker}
-				show={show}
-				mode={mode}
+				datePickerConfig={datePickerConfig}
 				onDateChange={onDateChange}
 				transactionItem={transactionItem}
 				updateTransaction={updateTransaction}
@@ -79,14 +77,3 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 });
-
-// name={name}
-// setName={setName}
-// amount={amount}
-// setAmount={setAmount}
-// category={category}
-// setCategory={setCategory}
-// date={date}
-// setDate={setDate}
-// note={note}
-// setNote={setNote}
