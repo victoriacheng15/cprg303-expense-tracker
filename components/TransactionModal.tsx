@@ -1,8 +1,13 @@
 import { StyleSheet, Modal, View, Text, TextInput, Button } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function TransactionModal({
 	modalVisible,
 	setModalVisible,
+	showDatepicker,
+	show,
+	mode,
+	onDateChange,
 	name,
 	setName,
 	amount,
@@ -57,6 +62,17 @@ export default function TransactionModal({
 						value={date}
 						onChangeText={setDate}
 					/>
+					<Button title="Select Date" onPress={showDatepicker} />
+					{show && (
+						<DateTimePicker
+							testID="dateTimePicker"
+							value={date ? new Date(date) : new Date()}
+							mode={mode}
+							is24Hour={true}
+							display="default"
+							onChange={onDateChange}
+						/>
+					)}
 
 					{/* Note Input */}
 					<Text style={styles.label}>Note (Optional)</Text>

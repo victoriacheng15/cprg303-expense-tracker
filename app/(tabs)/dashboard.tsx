@@ -9,9 +9,10 @@ export default function Dashboard() {
 	const {
 		modalVisible,
 		setModalVisible,
-		isDatePickerVisible, // waiting to fix
-		setDatePickerVisible, // waiting to fix
-		handleDateChange, // waiting to fix
+		showDatepicker,
+		show,
+		mode,
+		onDateChange,
 		name,
 		setName,
 		amount,
@@ -60,9 +61,10 @@ export default function Dashboard() {
 			<TransactionModal
 				modalVisible={modalVisible}
 				setModalVisible={setModalVisible}
-				datePickerVisible={isDatePickerVisible}
-				setDatePickerVisible={setDatePickerVisible}
-				handleDateChange={handleDateChange}
+				showDatepicker={showDatepicker}
+				show={show}
+				mode={mode}
+				onDateChange={onDateChange}
 				name={name}
 				setName={setName}
 				amount={amount}

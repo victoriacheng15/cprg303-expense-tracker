@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Alert, Platform } from "react-native";
+import { Alert } from "react-native";
 
 export function useAddTransaction() {
 	const [modalVisible, setModalVisible] = useState(false);
-	const [isDatePickerVisible, setDatePickerVisible] = useState(false);
+	const [show, setShow] = useState(false);
+	const [mode, setMode] = useState<ModeTypes>("date");
 	const [name, setName] = useState("");
 	const [amount, setAmount] = useState("");
 	const [category, setCategory] = useState("");
@@ -84,11 +85,19 @@ export function useAddTransaction() {
 		},
 	];
 
-	function handleDateChange(selectedDate: Date | undefined) {
-		setDatePickerVisible(Platform.OS === "ios");
-		if (selectedDate) {
-			setDate(selectedDate.toISOString().split("T")[0]);
-		}
+	function showDatepicker() {
+		setShow(true);
+		setMode("date");
+	}
+
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	function onDateChange(_: any, selectedDate?: Date) {
+		const currentDate = selectedDate || (date ? new Date(date) : new Date());
+		setShow(false);
+
+		// Format the date as YYYY-MM-DD
+		const formattedDate = currentDate.toISOString().split("T")[0];
+		setDate(formattedDate);
 	}
 
 	function handleAddTransaction() {
@@ -122,9 +131,10 @@ export function useAddTransaction() {
 	return {
 		modalVisible,
 		setModalVisible,
-		isDatePickerVisible, // waiting to fix
-		setDatePickerVisible, // waiting to fix
-		handleDateChange, // waiting to fix
+		showDatepicker,
+		show,
+		mode,
+		onDateChange,
 		name,
 		setName,
 		amount,
