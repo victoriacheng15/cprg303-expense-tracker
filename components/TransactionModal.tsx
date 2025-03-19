@@ -8,18 +8,12 @@ export default function TransactionModal({
 	show,
 	mode,
 	onDateChange,
-	name,
-	setName,
-	amount,
-	setAmount,
-	category,
-	setCategory,
-	date,
-	setDate,
-	note,
-	setNote,
+	transactionItem,
+	updateTransaction,
 	handleAddTransaction,
 }: TransactionModalProps) {
+	const { name, amount, category, date, note } = transactionItem;
+
 	return (
 		<Modal visible={modalVisible} animationType="slide" transparent={true}>
 			<View style={styles.modalContainer}>
@@ -32,7 +26,7 @@ export default function TransactionModal({
 						style={styles.input}
 						placeholder="Enter name"
 						value={name}
-						onChangeText={setName}
+						onChangeText={(value) => updateTransaction("name", value)}
 					/>
 
 					{/* Amount Input */}
@@ -40,8 +34,8 @@ export default function TransactionModal({
 					<TextInput
 						style={styles.input}
 						placeholder="Enter amount"
-						value={amount}
-						onChangeText={setAmount}
+						value={String(amount)}
+						onChangeText={(value) => updateTransaction("amount", value)}
 						keyboardType="numeric"
 					/>
 
@@ -51,7 +45,7 @@ export default function TransactionModal({
 						style={styles.input}
 						placeholder="Enter category"
 						value={category}
-						onChangeText={setCategory}
+						onChangeText={(value) => updateTransaction("category", value)}
 					/>
 
 					{/* Date Input */}
@@ -60,7 +54,7 @@ export default function TransactionModal({
 						style={styles.input}
 						placeholder="YYYY-MM-DD"
 						value={date}
-						onChangeText={setDate}
+						editable={false}
 					/>
 					<Button title="Select Date" onPress={showDatepicker} />
 					{show && (
@@ -80,7 +74,7 @@ export default function TransactionModal({
 						style={styles.input}
 						placeholder="Enter note"
 						value={note}
-						onChangeText={setNote}
+						onChangeText={(value) => updateTransaction("note", value)}
 					/>
 
 					{/* Buttons */}

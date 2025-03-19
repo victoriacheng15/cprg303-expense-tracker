@@ -13,16 +13,8 @@ export default function Dashboard() {
 		show,
 		mode,
 		onDateChange,
-		name,
-		setName,
-		amount,
-		setAmount,
-		category,
-		setCategory,
-		date,
-		setDate,
-		note,
-		setNote,
+		transactionItem,
+		updateTransaction,
 		handleAddTransaction,
 		transactions,
 	} = useAddTransaction();
@@ -65,16 +57,8 @@ export default function Dashboard() {
 				show={show}
 				mode={mode}
 				onDateChange={onDateChange}
-				name={name}
-				setName={setName}
-				amount={amount}
-				setAmount={setAmount}
-				category={category}
-				setCategory={setCategory}
-				date={date}
-				setDate={setDate}
-				note={note}
-				setNote={setNote}
+				transactionItem={transactionItem}
+				updateTransaction={updateTransaction}
 				handleAddTransaction={handleAddTransaction}
 			/>
 		</View>
@@ -95,3 +79,14 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 });
+
+// name={name}
+// setName={setName}
+// amount={amount}
+// setAmount={setAmount}
+// category={category}
+// setCategory={setCategory}
+// date={date}
+// setDate={setDate}
+// note={note}
+// setNote={setNote}
