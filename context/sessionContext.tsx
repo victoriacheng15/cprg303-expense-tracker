@@ -1,106 +1,129 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { router } from "expo-router";
-import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import type { User } from "@supabase/supabase-js";
 import * as Linking from "expo-linking";
 
 const SessionContext = createContext<SessionContextType>({
-	session: null,
+	user: null,
+	isLoading: true,
 	signOut: async () => {},
 });
 
-export const useSession = () => useContext(SessionContext);
+export const useSessionContext = () => useContext(SessionContext);
 
 export function SessionProvider({ children }: ChildrenProps) {
-	const [session, setSession] = useState<Session | null>(null);
+	const [user, setUser] = useState<User | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
 
-	// Fetch the initial session and listen for auth state changes
+	async function handleProfile(user: User) {
+		console.log("Fetching profile...");
+		const { data: profile, error } = await supabase
+			.from("profile")
+			.select("*")
+			.eq("user_id", user.id)
+			.single();
+
+		if (error?.code === "PGRST116") {
+			// No profile found
+			console.log("Creating profile...");
+			await supabase.from("profile").insert({
+				user_id: user.id,
+				email: user.email,
+			});
+		}
+	}
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		// Fetch the initial session
-		supabase.auth
-			.getSession()
-			.then(({ data: { session } }) => setSession(session));
+		async function initializeAuth() {
+			// Check initial session
+			const {
+				data: { session },
+			} = await supabase.auth.getSession();
+			setUser(session?.user ?? null);
+			setIsLoading(false);
 
-		// Listen for auth state changes
-		const { data: authListener } = supabase.auth.onAuthStateChange(
-			(_event, session) => setSession(session),
-		);
+			// Listen for auth changes
+			const {
+				data: { subscription },
+			} = supabase.auth.onAuthStateChange(async (event, session) => {
+				console.log("Auth event:", event);
+				// Handle all session updates
+				const currentUser = session?.user ?? null;
+				setUser(currentUser);
+				setIsLoading(false);
 
-		// Cleanup the listener on unmount
+				// Handle post-auth logic for ANY successful auth
+				if (currentUser && !user) {
+					await handleProfile(currentUser);
+				}
+			});
+
+			return subscription;
+		}
+
+		const subscriptionPromise = initializeAuth();
+
 		return () => {
-			if (authListener?.subscription) {
-				authListener.subscription.unsubscribe();
-			}
+			subscriptionPromise.then((subscription) => {
+				subscription?.unsubscribe();
+			});
 		};
 	}, []);
 
-	async function signOut() {
-		const { error } = await supabase.auth.signOut();
-
-		if (error) {
-			console.error("Error signing out:", error);
-		} else {
-			setSession(null);
-			router.replace("/");
-		}
-	}
-
-	async function handleDeepLink(event: { url: string }) {
-		const url = event.url;
-
-		// Parse the URL manually
-		const urlObject = new URL(url);
-		// Remove the '#' and parse the hash fragment
-		const hashParams = new URLSearchParams(urlObject.hash.substring(1));
-
-		// Extract the tokens and type from the hash fragment
-		const access_token = hashParams.get("access_token");
-		const refresh_token = hashParams.get("refresh_token");
-		const type = hashParams.get("type");
-
-		if (type === "magiclink" && access_token && refresh_token) {
-			try {
-				const tokens = {
-					access_token,
-					refresh_token,
-				};
-
-				const { data, error } = await supabase.auth.setSession(tokens);
-
-				if (error) {
-					console.error("Error setting session:", error);
-				} else {
-					console.log("User logged in:", data);
-					setSession(data.session);
-				}
-			} catch (error) {
-				console.error("Error setting session:", error);
-			}
-		}
-	}
-
-	// Handle deep linking for Supabase magic links
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		// Listen for deep link events
-		const subscription = Linking.addEventListener("url", handleDeepLink);
+		// Deep link handling
+		async function handleDeepLink(url: string | null) {
+			console.log("[Deep Link] Received URL:", url);
+			if (!url) return;
 
-		// Check if the app was opened with a deep link
-		Linking.getInitialURL()
-			.then((url) => {
-				if (url) handleDeepLink({ url });
-			})
-			.catch((error) => {
-				console.error("Error getting initial URL:", error);
-			});
+			const { access_token, refresh_token, type } = parseHashFragment(url);
 
-		// Cleanup the subscription on unmount
+			if (type === "magiclink" && access_token && refresh_token) {
+				const { data, error } = await supabase.auth.setSession({
+					access_token,
+					refresh_token,
+				});
+
+				if (!error && data.session) {
+					console.log("Session set with magiclink!");
+					setUser(data.session.user);
+					await handleProfile(data.session.user);
+				}
+			}
+		}
+
+		// Listen for incoming links
+		const subscription = Linking.addEventListener("url", ({ url }) =>
+			handleDeepLink(url),
+		);
+
+		// Check initial URL
+		Linking.getInitialURL().then(handleDeepLink);
+
 		return () => subscription.remove();
 	}, []);
 
+	async function signOut() {
+		console.log("Signing out...");
+		const { error } = await supabase.auth.signOut();
+		if (!error) {
+			setUser(null);
+			router.replace("/");
+		}
+		console.log("Signed out!");
+	}
+
 	return (
-		<SessionContext.Provider value={{ session, signOut }}>
+		<SessionContext.Provider value={{ user, isLoading, signOut }}>
 			{children}
 		</SessionContext.Provider>
 	);
+}
+
+function parseHashFragment(url: string) {
+	const hash = new URL(url).hash.substring(1);
+	return Object.fromEntries(new URLSearchParams(hash));
 }
