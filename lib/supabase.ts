@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
 
 const isDevelopment = process.env.NODE_ENV === "development";
-const redirectTo = isDevelopment
+export const redirectTo = isDevelopment
 	? process.env.EXPO_PUBLIC_DEV_REDIRECT_URL
 	: process.env.EXPO_PUBLIC_PROD_REDIRECT_URL;
 
@@ -28,13 +28,3 @@ AppState.addEventListener("change", (state) => {
 		supabase.auth.stopAutoRefresh();
 	}
 });
-
-export async function signInWithEmail(email: string) {
-	const { data, error } = await supabase.auth.signInWithOtp({
-		email,
-		options: {
-			emailRedirectTo: redirectTo,
-		},
-	});
-	return { data, error };
-}
