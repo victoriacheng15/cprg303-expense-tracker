@@ -1,14 +1,14 @@
 import { StyleSheet, View, Text } from "react-native";
 import { Redirect } from "expo-router";
-import { useSession } from "@/context/sessionContext";
+import { useSessionContext } from "@/context/sessionContext";
 import { globalStyle } from "@/constants/";
 import Login from "@/components/Login";
 
 export default function App() {
-	const { session } = useSession();
+	const { user } = useSessionContext();
 
 	// If the user is logged in, redirect to the dashboard
-	if (session) {
+	if (user) {
 		return (
 			<View style={globalStyle.container}>
 				<Redirect href="/(tabs)/dashboard" />
