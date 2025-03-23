@@ -1,5 +1,7 @@
 import { StyleSheet, Modal, View, Text, TextInput, Button } from "react-native";
+import { useGetCategories } from "@/hooks/useGetCategories";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import CategoryDropdown from "./CategoyDropdown";
 
 export default function TransactionModal({
 	modalVisible,
@@ -11,8 +13,13 @@ export default function TransactionModal({
 	updateTransaction,
 	handleAddTransaction,
 }: TransactionModalProps) {
-	const { name, amount, category, date, note } = transactionItem;
+	const { name, amount, date, note } = transactionItem;
 	const { show, mode } = datePickerConfig;
+	const {
+		categoryState: { categories, loading, error },
+		selectedCategory,
+		setSelectedCategory,
+	} = useGetCategories();
 
 	return (
 		<Modal visible={modalVisible} animationType="slide" transparent={true}>
@@ -41,11 +48,15 @@ export default function TransactionModal({
 
 					{/* Category Input */}
 					<Text style={styles.label}>Category</Text>
-					<TextInput
-						style={styles.input}
-						placeholder="Enter category"
-						value={category}
-						onChangeText={(value) => updateTransaction("category", value)}
+					<CategoryDropdown
+						categories={categories}
+						loading={loading}
+						error={error}
+						selectedCategory={selectedCategory}
+						onSelect={(category) => {
+							setSelectedCategory(category);
+							updateTransaction("category", category.name);
+						}}
 					/>
 
 					{/* Date Input */}
@@ -79,7 +90,13 @@ export default function TransactionModal({
 
 					{/* Buttons */}
 					<View style={styles.buttonContainer}>
-						<Button title="Cancel" onPress={() => setModalVisible(false)} />
+						<Button
+							title="Cancel"
+							onPress={() => {
+								setModalVisible(false);
+								setSelectedCategory(null);
+							}}
+						/>
 						<Button title="Add" onPress={handleAddTransaction} />
 					</View>
 				</View>

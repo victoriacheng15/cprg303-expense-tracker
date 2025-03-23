@@ -71,3 +71,16 @@ interface TransactionModalProps {
 	updateTransaction: (field: keyof Transaction, value: string) => void;
 	handleAddTransaction: () => void;
 }
+
+interface Category {
+	id: string;
+	name: string;
+}
+
+interface CategoryDropdownProps {
+	categories: Category[];
+	loading: boolean;
+	error: Error | null;
+	selectedCategory: Category | null;
+	onSelect: (category: Category) => void;
+}
