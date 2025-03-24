@@ -12,20 +12,25 @@ export default function Logout({ size, color }: LogoutProps) {
 	const { signOut } = useSessionContext();
 
 	async function handleSignOut() {
-		Alert.alert("Sign out", "Are you sure you want to sign out?", [
-			{
-				text: "Cancel",
-				style: "cancel",
-			},
-			{
-				text: "Sign Out",
-				style: "destructive",
-				onPress: async () => {
-					await signOut();
-					router.replace("/");
+		Alert.alert(
+			"Sign out",
+			"Are you sure you want to sign out?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel",
 				},
-			},
-		],{cancelable: true});
+				{
+					text: "Sign Out",
+					style: "destructive",
+					onPress: async () => {
+						await signOut();
+						router.replace("/");
+					},
+				},
+			],
+			{ cancelable: true },
+		);
 	}
 
 	return (
