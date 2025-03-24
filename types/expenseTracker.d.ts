@@ -61,6 +61,7 @@ interface TransactionItemProps {
 	name: string;
 	category: string;
 	amountText: string;
+	id: string;
 }
 
 type ModeTypes = "date" | "time" | "datetime" | "countdown";
