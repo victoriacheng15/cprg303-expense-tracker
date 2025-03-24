@@ -28,8 +28,8 @@ export function useGetCategories() {
 		try {
 			const { data, error } = await supabase
 				.from("categories")
-				.select("id, name")
-				.order("name", { ascending: true });
+				.select("id, category_name")
+				.order("category_name", { ascending: true });
 
 			if (error) throw new Error(`Supabase error: ${error.message}`);
 
