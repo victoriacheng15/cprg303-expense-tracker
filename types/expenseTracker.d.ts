@@ -4,6 +4,24 @@ interface SessionContextType {
 	signOut: () => Promise<void>;
 }
 
+interface TransactionsContextType {
+	transactions: TransactionItem[];
+	transactionItem: TransactionItem;
+	modalVisible: boolean;
+	datePickerConfig: DatePickerConfig;
+	setModalVisible: (visible: boolean) => void;
+	showDatepicker: () => void;
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	onDateChange: (_: any, selectedDate?: Date) => void;
+	updateTransaction: (
+		field: keyof TransactionItem,
+		value: string | number,
+	) => void;
+	resetTransaction: () => void;
+	AddTransaction: () => Promise<void>;
+	getTransactions: () => void;
+}
+
 interface ChildrenProps {
 	children: React.ReactNode;
 }
@@ -60,20 +78,6 @@ interface TransactionItem {
 interface DatePickerConfig {
 	show: boolean;
 	mode: ModeTypes;
-}
-
-interface TransactionModalProps {
-	modalVisible: boolean;
-	setModalVisible: (visible: boolean) => void;
-	showDatepicker: () => void;
-	datePickerConfig: DatePickerConfig;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	onDateChange: (event: any, selectedDate?: Date) => void;
-	transactionItem: TransactionItem;
-	updateTransaction: (field: keyof TransactionItem, value: string) => void;
-	handleAddTransaction: () => void;
-	resetTransaction: () => void;
-	getTransactions: () => void;
 }
 
 interface Category {

@@ -1,20 +1,22 @@
 import { StyleSheet, Modal, View, Text, TextInput, Button } from "react-native";
-import { useGetCategories } from "@/hooks/useGetCategories";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useTransactionsContext } from "@/context/transactionsContext";
+import { useGetCategories } from "@/hooks/useGetCategories";
 import CategoryDropdown from "./CategoyDropdown";
 
-export default function TransactionModal({
-	modalVisible,
-	setModalVisible,
-	showDatepicker,
-	datePickerConfig,
-	onDateChange,
-	transactionItem,
-	resetTransaction,
-	updateTransaction,
-	handleAddTransaction,
-	getTransactions,
-}: TransactionModalProps) {
+export default function TransactionModal() {
+	const {
+		modalVisible,
+		setModalVisible,
+		datePickerConfig,
+		showDatepicker,
+		onDateChange,
+		transactionItem,
+		updateTransaction,
+		resetTransaction,
+		AddTransaction,
+		getTransactions,
+	} = useTransactionsContext();
 	const { name, amount, date, note } = transactionItem;
 	const { show, mode } = datePickerConfig;
 	const {
@@ -30,7 +32,7 @@ export default function TransactionModal({
 	}
 
 	function handleAdd() {
-		handleAddTransaction();
+		AddTransaction();
 		getTransactions();
 		setSelectedCategory(null);
 		resetTransaction();

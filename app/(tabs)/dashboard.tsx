@@ -1,25 +1,15 @@
 import { StyleSheet, View, Text, FlatList } from "react-native";
+import { useTransactionsContext } from "@/context/transactionsContext";
 import { globalStyle } from "@/constants/";
-import { useAddTransaction } from "@/hooks/useAddTransaction";
 import TransactionItem from "@/components/TransactionItem";
 import ModalButton from "@/components/ModalButton";
 import TransactionModal from "@/components/TransactionModal";
 
 export default function Dashboard() {
-	const {
-		modalVisible,
-		setModalVisible,
-		showDatepicker,
-		datePickerConfig,
-		onDateChange,
-		transactionItem,
-		updateTransaction,
-		resetTransaction,
-		handleAddTransaction,
-		getTransactions,
-		transactions,
-	} = useAddTransaction();
+	const { setModalVisible, transactions } = useTransactionsContext();
 	const incomeCategories = ["Salary", "Freelance", "Investment"];
+
+	// console.log("Transactions:", transactions);
 
 	return (
 		<View style={globalStyle.container}>
@@ -53,18 +43,7 @@ export default function Dashboard() {
 			<ModalButton onPress={() => setModalVisible(true)} />
 
 			{/* Modal for Adding a New Transaction */}
-			<TransactionModal
-				modalVisible={modalVisible}
-				setModalVisible={setModalVisible}
-				showDatepicker={showDatepicker}
-				datePickerConfig={datePickerConfig}
-				onDateChange={onDateChange}
-				transactionItem={transactionItem}
-				updateTransaction={updateTransaction}
-				handleAddTransaction={handleAddTransaction}
-				resetTransaction={resetTransaction}
-				getTransactions={getTransactions}
-			/>
+			<TransactionModal />
 		</View>
 	);
 }
