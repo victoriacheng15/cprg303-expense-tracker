@@ -21,27 +21,27 @@ export default function Dashboard() {
 					data={transactions}
 					keyExtractor={(item) => item.id}
 					renderItem={({ item }) => {
-						const { category_name, name, amount } = item;
-						// Determine if the transaction is income or expense
+						const { id, category_name, name, amount } = item;
 						const isIncome = incomeCategories.includes(category_name);
+						const formattedAmount = isIncome
+							? `+$${amount.toFixed(2)}`
+							: `-$${amount.toFixed(2)}`;
 
 						return (
 							<TransactionItem
+								id={id}
 								isIncome={isIncome}
 								name={name}
 								category={category_name}
-								amountText={
-									isIncome ? `+$${amount.toFixed(2)}` : `-$${amount.toFixed(2)}`
-								}
+								amountText={formattedAmount}
 							/>
 						);
 					}}
 				/>
 			</View>
 
-			{/* Button to Open the Modal */}
+			{/* Button to open the add new transaction modal */}
 			<ModalButton onPress={() => setModalVisible(true)} />
-
 			{/* Modal for Adding a New Transaction */}
 			<TransactionModal />
 		</View>
