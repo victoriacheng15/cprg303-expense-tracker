@@ -7,15 +7,15 @@ export function useAddTransaction() {
 		show: false,
 		mode: "date",
 	});
-	const [transactionItem, setTransactionItem] = useState<Transaction>({
+	const [transactionItem, setTransactionItem] = useState<TransactionItem>({
 		name: "",
 		amount: 0,
-		category: "",
+		category: null,
 		date: "",
 		note: "",
 	});
 
-	const { name, amount, category, date, note } = transactionItem;
+	const { name, amount, category, date } = transactionItem;
 
 	// Sample data for transactions
 	const transactions = [
@@ -102,16 +102,15 @@ export function useAddTransaction() {
 
 		// Format the date as YYYY-MM-DD
 		const formattedDate = currentDate.toISOString().split("T")[0];
-		// setDate(formattedDate);
 		setTransactionItem((prev) => ({ ...prev, date: formattedDate }));
 	}
 
 	// Helper function to update a specific field in the transaction
-	function updateTransaction(field: keyof Transaction, value: string) {
-		setTransactionItem((prev) => ({
-			...prev,
-			[field]: value,
-		}));
+	function updateTransaction(
+		field: keyof TransactionItem,
+		value: string | number,
+	) {
+		setTransactionItem((prev) => ({ ...prev, [field]: value }));
 	}
 
 	// Reset transaction form
@@ -119,7 +118,7 @@ export function useAddTransaction() {
 		setTransactionItem({
 			name: "",
 			amount: 0,
-			category: "",
+			category: null,
 			date: "",
 			note: "",
 		});
@@ -134,9 +133,9 @@ export function useAddTransaction() {
 
 		// Add the new transaction to the list (or send to the backend)
 		const newTransaction = {
-			id: String(transactions.length + 1), // Temporary ID
 			...transactionItem,
 			amount: Number(amount),
+			category: Number(category),
 		};
 
 		console.log("New Transaction:", newTransaction);

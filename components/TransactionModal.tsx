@@ -10,6 +10,7 @@ export default function TransactionModal({
 	datePickerConfig,
 	onDateChange,
 	transactionItem,
+	resetTransaction,
 	updateTransaction,
 	handleAddTransaction,
 }: TransactionModalProps) {
@@ -20,6 +21,18 @@ export default function TransactionModal({
 		selectedCategory,
 		setSelectedCategory,
 	} = useGetCategories();
+
+	function handleCancel() {
+		setModalVisible(false);
+		setSelectedCategory(null);
+		resetTransaction();
+	}
+
+	function handleAdd() {
+		handleAddTransaction();
+		setSelectedCategory(null);
+		resetTransaction();
+	}
 
 	return (
 		<Modal visible={modalVisible} animationType="slide" transparent={true}>
@@ -55,7 +68,7 @@ export default function TransactionModal({
 						selectedCategory={selectedCategory}
 						onSelect={(category) => {
 							setSelectedCategory(category);
-							updateTransaction("category", category.name);
+							updateTransaction("category", String(category.id));
 						}}
 					/>
 
@@ -90,14 +103,8 @@ export default function TransactionModal({
 
 					{/* Buttons */}
 					<View style={styles.buttonContainer}>
-						<Button
-							title="Cancel"
-							onPress={() => {
-								setModalVisible(false);
-								setSelectedCategory(null);
-							}}
-						/>
-						<Button title="Add" onPress={handleAddTransaction} />
+						<Button title="Cancel" onPress={handleCancel} />
+						<Button title="Add" onPress={handleAdd} />
 					</View>
 				</View>
 			</View>

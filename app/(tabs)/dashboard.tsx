@@ -14,6 +14,7 @@ export default function Dashboard() {
 		onDateChange,
 		transactionItem,
 		updateTransaction,
+		resetTransaction,
 		handleAddTransaction,
 		transactions,
 	} = useAddTransaction();
@@ -58,6 +59,7 @@ export default function Dashboard() {
 				transactionItem={transactionItem}
 				updateTransaction={updateTransaction}
 				handleAddTransaction={handleAddTransaction}
+				resetTransaction={resetTransaction}
 			/>
 		</View>
 	);
