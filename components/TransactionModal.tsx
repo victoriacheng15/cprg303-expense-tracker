@@ -33,9 +33,9 @@ export default function TransactionModal() {
 
 	function handleAdd() {
 		AddTransaction();
-		getTransactions();
 		setSelectedCategory(null);
 		resetTransaction();
+		getTransactions();
 	}
 
 	return (
