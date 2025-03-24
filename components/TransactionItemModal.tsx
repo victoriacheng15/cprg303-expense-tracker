@@ -5,6 +5,7 @@ import {
 	Modal,
 	ScrollView,
 	Button,
+	Alert,
 } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
 
@@ -30,9 +31,28 @@ export default function TransactionItemModal({
 	}
 
 	async function hanadleDelete() {
-		await deleteTransaction(selectedTransaction.id);
-		setModalVisible(false);
-		getTransactions();
+		Alert.alert(
+			"Delete a Transaction",
+			"Are you sure you want to delete this transaction?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel",
+				},
+				{
+					text: "Delete",
+					style: "destructive",
+					onPress: async () => {
+						await deleteTransaction(selectedTransaction.id);
+						setModalVisible(false);
+						getTransactions();
+					},
+				},
+			],
+			{
+				cancelable: true,
+			},
+		);
 	}
 
 	return (
