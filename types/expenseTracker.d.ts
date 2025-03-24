@@ -1,6 +1,6 @@
 interface SessionContextType {
-	user: User | null;
-	isLoading: boolean;
+	session: Session | null;
+	signInWithEmail: (email: string) => Promise<void>;
 	signOut: () => Promise<void>;
 }
 
