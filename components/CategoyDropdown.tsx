@@ -50,7 +50,7 @@ export default function CategoryDropdown({
 							setIsOpen(false);
 						}}
 					>
-						<Text style={styles.itemText}>{category.name}</Text>
+						<Text style={styles.itemText}>{category.category_name}</Text>
 					</Pressable>
 				))}
 			</ScrollView>
@@ -64,7 +64,7 @@ export default function CategoryDropdown({
 				onPress={() => setIsOpen(!isOpen)}
 			>
 				<Text style={styles.selectedText}>
-					{selectedCategory?.name || "Select a category"}
+					{selectedCategory?.category_name || "Select a category"}
 				</Text>
 				{!error && <Text style={styles.arrow}>{isOpen ? "▲" : "▼"}</Text>}
 			</TouchableOpacity>
