@@ -1,26 +1,47 @@
-import { StyleSheet, View, Text } from "react-native";
+import { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { useTransactionsContext } from "@/context/transactionsContext";
+import TransactionItemModal from "./TransactionItemModal";
 
 export default function TransactionItem({
 	isIncome,
 	name,
 	category,
 	amountText,
+	id,
 }: TransactionItemProps) {
+	const { transactions } = useTransactionsContext();
+	const [modalVisible, setModalVisible] = useState(false);
+	const selectedTransaction = transactions.find((item) => item.id === id);
+
 	return (
-		<View style={styles.transactionItem}>
-			<View style={styles.transactionDetails}>
-				<Text style={styles.transactionName}>{name}</Text>
-				<Text style={styles.transactionCategory}>{category}</Text>
-			</View>
-			<Text
-				style={[
-					styles.transactionAmount,
-					isIncome ? styles.positiveAmount : styles.negativeAmount,
-				]}
-			>
-				{amountText}
-			</Text>
-		</View>
+		<>
+			<TouchableOpacity onPress={() => setModalVisible(true)}>
+				<View style={styles.transactionItem}>
+					<View style={styles.transactionDetails}>
+						<Text style={styles.transactionName}>{name}</Text>
+						<Text style={styles.transactionCategory}>{category}</Text>
+					</View>
+					<Text
+						style={[
+							styles.transactionAmount,
+							isIncome ? styles.positiveAmount : styles.negativeAmount,
+						]}
+					>
+						{amountText}
+					</Text>
+				</View>
+			</TouchableOpacity>
+
+			{/* Modal for Transaction Details */}
+			{selectedTransaction && (
+				<TransactionItemModal
+					modalVisible={modalVisible}
+					setModalVisible={setModalVisible}
+					selectedTransaction={selectedTransaction}
+				/>
+			)}
+		</>
 	);
 }
 
