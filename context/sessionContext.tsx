@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import type { Session } from "@supabase/supabase-js";
 import * as QueryParams from "expo-auth-session/build/QueryParams";
 import * as Linking from "expo-linking";
-import { useAuth } from "@/hooks/useAuth";
-import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
+import { useHandleProfile } from "@/hooks/useHandleProfile";
 
 const SessionContext = createContext<SessionContextType>({
 	session: null,
@@ -15,8 +16,11 @@ export const useSessionContext = () => useContext(SessionContext);
 
 export function SessionProvider({ children }: ChildrenProps) {
 	const { signInWithEmail, signOut } = useAuth();
+	const { handleProfile, shouldHandleProfile, setShouldHandleProfile } =
+		useHandleProfile();
 	const [session, setSession] = useState<Session | null>(null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		async function fetchSession() {
 			try {
@@ -25,10 +29,13 @@ export function SessionProvider({ children }: ChildrenProps) {
 				} = await supabase.auth.getSession();
 
 				setSession(session ?? null);
-				console.log("Fetched session:", session);
-				console.log("User:", session?.user);
+
+				if (session?.user && shouldHandleProfile) {
+					await handleProfile(session.user);
+					setShouldHandleProfile(false);
+				}
 			} catch (error) {
-				console.error("Unexpected error:", error);
+				console.error(`Error fetching session: ${error}`);
 			}
 		}
 
@@ -47,7 +54,21 @@ export function SessionProvider({ children }: ChildrenProps) {
 			});
 
 			if (error) throw error;
+
 			setSession(data.session);
+		}
+
+		async function handleAuthStateChange(
+			event: string,
+			session: Session | null,
+		) {
+			console.log(`Auth state changed: ${event}`);
+			setSession(session ?? null);
+
+			if (session?.user && shouldHandleProfile) {
+				await handleProfile(session.user);
+				setShouldHandleProfile(false);
+			}
 		}
 
 		fetchSession();
@@ -55,18 +76,15 @@ export function SessionProvider({ children }: ChildrenProps) {
 		// Listen for real-time auth state changes
 		const {
 			data: { subscription },
-		} = supabase.auth.onAuthStateChange((event, session) => {
-			console.log("Auth state changed:", event);
-			setSession(session ?? null);
-		});
+		} = supabase.auth.onAuthStateChange(handleAuthStateChange);
 
 		// Set up the deep link listener
-		const handleDeepLink = (event: { url: string }) => {
-			console.log("Deep link URL:", event.url);
+		function handleDeepLink(event: { url: string }) {
+			console.log(`Deep Link URL: ${event.url}`);
 			createSessionFromUrl(event.url).catch((error) => {
-				console.error("Error handling deep link:", error);
+				console.error(`Error creating session from URL: ${error}`);
 			});
-		};
+		}
 
 		const linkingSubscription = Linking.addEventListener("url", handleDeepLink);
 
@@ -88,9 +106,4 @@ export function SessionProvider({ children }: ChildrenProps) {
 			{children}
 		</SessionContext.Provider>
 	);
-}
-
-function parseHashFragment(url: string) {
-	const hash = new URL(url).hash.substring(1);
-	return Object.fromEntries(new URLSearchParams(hash));
 }
