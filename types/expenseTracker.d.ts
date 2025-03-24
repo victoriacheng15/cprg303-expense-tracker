@@ -47,8 +47,8 @@ interface TransactionItemProps {
 
 type ModeTypes = "date" | "time" | "datetime" | "countdown";
 
-interface Transaction {
-	category: string;
+interface TransactionItem {
+	category: number | null;
 	name: string;
 	amount: number;
 	date: string;
@@ -67,13 +67,14 @@ interface TransactionModalProps {
 	datePickerConfig: DatePickerConfig;
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	onDateChange: (event: any, selectedDate?: Date) => void;
-	transactionItem: Transaction;
-	updateTransaction: (field: keyof Transaction, value: string) => void;
+	transactionItem: TransactionItem;
+	updateTransaction: (field: keyof TransactionItem, value: string) => void;
 	handleAddTransaction: () => void;
+	resetTransaction: () => void;
 }
 
 interface Category {
-	id: string;
+	id: number;
 	name: string;
 }
 
