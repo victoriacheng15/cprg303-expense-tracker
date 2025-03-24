@@ -48,7 +48,9 @@ interface TransactionItemProps {
 type ModeTypes = "date" | "time" | "datetime" | "countdown";
 
 interface TransactionItem {
+	id: string;
 	category: number | null;
+	category_name: string;
 	name: string;
 	amount: number;
 	date: string;
@@ -71,11 +73,12 @@ interface TransactionModalProps {
 	updateTransaction: (field: keyof TransactionItem, value: string) => void;
 	handleAddTransaction: () => void;
 	resetTransaction: () => void;
+	getTransactions: () => void;
 }
 
 interface Category {
 	id: number;
-	name: string;
+	category_name: string;
 }
 
 interface CategoryDropdownProps {
