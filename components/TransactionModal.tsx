@@ -13,6 +13,7 @@ export default function TransactionModal({
 	resetTransaction,
 	updateTransaction,
 	handleAddTransaction,
+	getTransactions,
 }: TransactionModalProps) {
 	const { name, amount, date, note } = transactionItem;
 	const { show, mode } = datePickerConfig;
@@ -30,6 +31,7 @@ export default function TransactionModal({
 
 	function handleAdd() {
 		handleAddTransaction();
+		getTransactions();
 		setSelectedCategory(null);
 		resetTransaction();
 	}

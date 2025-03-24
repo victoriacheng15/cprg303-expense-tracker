@@ -16,6 +16,7 @@ export default function Dashboard() {
 		updateTransaction,
 		resetTransaction,
 		handleAddTransaction,
+		getTransactions,
 		transactions,
 	} = useAddTransaction();
 	const incomeCategories = ["Salary", "Freelance", "Investment"];
@@ -30,16 +31,18 @@ export default function Dashboard() {
 					data={transactions}
 					keyExtractor={(item) => item.id}
 					renderItem={({ item }) => {
-						const { category, name, amount } = item;
+						const { category_name, name, amount } = item;
 						// Determine if the transaction is income or expense
-						const isIncome = incomeCategories.includes(category);
+						const isIncome = incomeCategories.includes(category_name);
 
 						return (
 							<TransactionItem
 								isIncome={isIncome}
 								name={name}
-								category={category}
-								amountText={isIncome ? `+$${amount}` : `-$${Math.abs(amount)}`}
+								category={category_name}
+								amountText={
+									isIncome ? `+$${amount.toFixed(2)}` : `-$${amount.toFixed(2)}`
+								}
 							/>
 						);
 					}}
@@ -60,6 +63,7 @@ export default function Dashboard() {
 				updateTransaction={updateTransaction}
 				handleAddTransaction={handleAddTransaction}
 				resetTransaction={resetTransaction}
+				getTransactions={getTransactions}
 			/>
 		</View>
 	);

@@ -1,95 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import { useSessionContext } from "@/context/sessionContext";
+import { supabase } from "@/lib/supabase";
 
 export function useAddTransaction() {
+	const {
+		session: { user },
+	} = useSessionContext();
+	const [transactions, setTransactions] = useState<TransactionItem[]>([]);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [datePickerConfig, setDatePickerConfig] = useState<DatePickerConfig>({
 		show: false,
 		mode: "date",
 	});
 	const [transactionItem, setTransactionItem] = useState<TransactionItem>({
+		id: "",
 		name: "",
 		amount: 0,
 		category: null,
+		category_name: "",
 		date: "",
 		note: "",
 	});
 
-	const { name, amount, category, date } = transactionItem;
+	const { name, amount, category, date, note } = transactionItem;
 
-	// Sample data for transactions
-	const transactions = [
-		{
-			id: "1",
-			category: "Food",
-			name: "McDonald's",
-			amount: -50.0,
-			date: "2023-10-01",
-		},
-		{
-			id: "2",
-			category: "Salary",
-			name: "Monthly Salary",
-			amount: 2000.0,
-			date: "2023-10-05",
-		},
-		{
-			id: "3",
-			category: "Transport",
-			name: "Uber Ride",
-			amount: -20.0,
-			date: "2023-10-07",
-		},
-		{
-			id: "4",
-			category: "Entertainment",
-			name: "Netflix Subscription",
-			amount: -30.0,
-			date: "2023-10-08",
-		},
-		{
-			id: "5",
-			category: "Freelance",
-			name: "Website Design Project",
-			amount: 500.0,
-			date: "2023-10-10",
-		},
-		{
-			id: "6",
-			category: "Utilities",
-			name: "Electricity Bill",
-			amount: -100.0,
-			date: "2023-10-12",
-		},
-		{
-			id: "7",
-			category: "Shopping",
-			name: "Zara Shopping",
-			amount: -75.0,
-			date: "2023-10-15",
-		},
-		{
-			id: "8",
-			category: "Investment",
-			name: "Stock Dividends",
-			amount: 300.0,
-			date: "2023-10-18",
-		},
-		{
-			id: "9",
-			category: "Health",
-			name: "Gym Membership",
-			amount: -40.0,
-			date: "2023-10-20",
-		},
-		{
-			id: "10",
-			category: "Travel",
-			name: "Flight to New York",
-			amount: -200.0,
-			date: "2023-10-25",
-		},
-	];
+	async function getTransactions() {
+		const { data: transactionsQuery, error } = await supabase
+			.from("expenses")
+			.select("*")
+			.eq("user_id", user.id)
+			.select(
+				"id, name,amount, category_id, date, note, categories(category_name)",
+			);
+
+		if (error) {
+			console.error(`Error fetching transactions: ${error.message}`);
+			return;
+		}
+
+		const reorganizedData: TransactionItem[] = transactionsQuery.map(
+			(item) => ({
+				id: item.id,
+				category: item.category_id,
+				category_name: item.categories?.category_name,
+				name: item.name,
+				amount: item.amount,
+				date: item.date,
+				note: item.note,
+			}),
+		);
+
+		setTransactions(reorganizedData);
+	}
 
 	function showDatepicker() {
 		setDatePickerConfig((prev) => ({ ...prev, show: true }));
@@ -116,15 +79,17 @@ export function useAddTransaction() {
 	// Reset transaction form
 	function resetTransaction() {
 		setTransactionItem({
+			id: "",
 			name: "",
 			amount: 0,
 			category: null,
+			category_name: "",
 			date: "",
 			note: "",
 		});
 	}
 
-	function handleAddTransaction() {
+	async function handleAddTransaction() {
 		// Validate inputs
 		if (!name || !amount || !category || !date) {
 			Alert.alert("Error", "Please fill out all required fields.");
@@ -133,16 +98,30 @@ export function useAddTransaction() {
 
 		// Add the new transaction to the list (or send to the backend)
 		const newTransaction = {
-			...transactionItem,
+			name,
+			date,
+			note,
 			amount: Number(amount),
-			category: Number(category),
+			category_id: Number(category),
+			user_id: user.id,
 		};
 
-		console.log("New Transaction:", newTransaction);
+		const { error } = await supabase.from("expenses").insert(newTransaction);
 
-		// Close the modal and reset the form
+		if (error) {
+			console.error(`Error adding transaction: ${error.message}`);
+			Alert.alert("Error", "Failed to add transaction. Please try again.");
+			return;
+		}
+
+		// console.log("New Transaction:", newTransaction);
 		resetTransaction();
 	}
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		getTransactions();
+	}, []);
 
 	return {
 		modalVisible,
@@ -154,6 +133,7 @@ export function useAddTransaction() {
 		updateTransaction,
 		resetTransaction,
 		handleAddTransaction,
+		getTransactions,
 		transactions,
 	};
 }
