@@ -1,27 +1,48 @@
-import { useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { Alert } from "react-native";
-import { useSessionContext } from "@/context/sessionContext";
 import { supabase } from "@/lib/supabase";
+import { useSessionContext } from "./sessionContext";
 
-export function useAddTransaction() {
-	const {
-		session: { user },
-	} = useSessionContext();
+const transactionObj = {
+	id: "",
+	name: "",
+	amount: 0,
+	category: null,
+	category_name: "",
+	date: "",
+	note: "",
+};
+
+const TransactionsContext = createContext<TransactionsContextType>({
+	transactions: [],
+	transactionItem: transactionObj,
+	modalVisible: false,
+	datePickerConfig: { show: false, mode: "date" },
+	setModalVisible: () => {},
+	showDatepicker: () => {},
+	onDateChange: () => {},
+	updateTransaction: () => {},
+	resetTransaction: () => {},
+	AddTransaction: async () => {},
+	getTransactions: () => {},
+});
+
+export const useTransactionsContext = () => useContext(TransactionsContext);
+
+export function TransactionsProvider({ children }: ChildrenProps) {
+	const { session } = useSessionContext();
+	const user = session?.user;
+
+	if (!user) return null;
+
 	const [transactions, setTransactions] = useState<TransactionItem[]>([]);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [datePickerConfig, setDatePickerConfig] = useState<DatePickerConfig>({
 		show: false,
 		mode: "date",
 	});
-	const [transactionItem, setTransactionItem] = useState<TransactionItem>({
-		id: "",
-		name: "",
-		amount: 0,
-		category: null,
-		category_name: "",
-		date: "",
-		note: "",
-	});
+	const [transactionItem, setTransactionItem] =
+		useState<TransactionItem>(transactionObj);
 
 	const { name, amount, category, date, note } = transactionItem;
 
@@ -31,7 +52,7 @@ export function useAddTransaction() {
 			.select("*")
 			.eq("user_id", user.id)
 			.select(
-				"id, name,amount, category_id, date, note, categories(category_name)",
+				"id, name, amount, category_id, date, note, categories(category_name)",
 			);
 
 		if (error) {
@@ -89,7 +110,7 @@ export function useAddTransaction() {
 		});
 	}
 
-	async function handleAddTransaction() {
+	async function AddTransaction() {
 		// Validate inputs
 		if (!name || !amount || !category || !date) {
 			Alert.alert("Error", "Please fill out all required fields.");
@@ -114,7 +135,6 @@ export function useAddTransaction() {
 			return;
 		}
 
-		// console.log("New Transaction:", newTransaction);
 		resetTransaction();
 	}
 
@@ -123,17 +143,23 @@ export function useAddTransaction() {
 		getTransactions();
 	}, []);
 
-	return {
-		modalVisible,
-		setModalVisible,
-		showDatepicker,
-		datePickerConfig,
-		onDateChange,
-		transactionItem,
-		updateTransaction,
-		resetTransaction,
-		handleAddTransaction,
-		getTransactions,
-		transactions,
-	};
+	return (
+		<TransactionsContext.Provider
+			value={{
+				modalVisible,
+				setModalVisible,
+				datePickerConfig,
+				showDatepicker,
+				onDateChange,
+				transactions,
+				transactionItem,
+				AddTransaction,
+				updateTransaction,
+				resetTransaction,
+				getTransactions,
+			}}
+		>
+			{children}
+		</TransactionsContext.Provider>
+	);
 }
