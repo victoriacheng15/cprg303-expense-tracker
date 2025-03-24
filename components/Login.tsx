@@ -1,27 +1,22 @@
 import { useState } from "react";
 import { StyleSheet, View, TextInput, Button, Alert } from "react-native";
-import { useAuth } from "@/hooks/useAuth";
+import { useSessionContext } from "@/context/sessionContext";
 
 export default function Login() {
+	const { signInWithEmail } = useSessionContext();
 	const [email, setEmail] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
-	const { signInWithEmail } = useAuth();
+	const [loading, setLoading] = useState(false);
 
 	async function handleLogin() {
-		setIsLoading(true);
-
-		try {
-			await signInWithEmail(email);
-			Alert.alert("Success", "Check your email for the login link!");
-		} catch (error) {
-			Alert.alert(
-				"Error",
-				error instanceof Error ? error.message : String(error),
-			);
-		} finally {
-			setIsLoading(false);
-			setEmail("");
+		if (!email) {
+			Alert.alert("Please enter your email.");
+			return;
 		}
+
+		setLoading(true);
+		await signInWithEmail(email);
+		setLoading(false);
+		setEmail("");
 	}
 
 	return (
@@ -34,9 +29,9 @@ export default function Login() {
 				autoCapitalize="none"
 			/>
 			<Button
-				title={isLoading ? "Loading..." : "Send Magic Link"}
+				title={"Sign In with Email"}
 				onPress={handleLogin}
-				disabled={isLoading}
+				disabled={loading}
 			/>
 		</View>
 	);

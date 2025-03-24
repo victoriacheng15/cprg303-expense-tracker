@@ -5,15 +5,10 @@ import { globalStyle } from "@/constants/";
 import Login from "@/components/Login";
 
 export default function App() {
-	const { user } = useSessionContext();
+	const { session } = useSessionContext();
 
-	// If the user is logged in, redirect to the dashboard
-	if (user) {
-		return (
-			<View style={globalStyle.container}>
-				<Redirect href="/(tabs)/dashboard" />
-			</View>
-		);
+	if (session) {
+		return <Redirect href="/(tabs)/dashboard" />;
 	}
 
 	// If the user is not logged in, show the login screen
