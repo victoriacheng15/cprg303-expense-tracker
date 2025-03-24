@@ -1,6 +1,7 @@
 import { Alert, TouchableOpacity } from "react-native";
+import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useAuth } from "@/hooks/useAuth";
+import { useSessionContext } from "@/context/sessionContext";
 
 interface LogoutProps {
 	size: number;
@@ -8,13 +9,23 @@ interface LogoutProps {
 }
 
 export default function Logout({ size, color }: LogoutProps) {
-	const { signOut } = useAuth();
+	const { signOut } = useSessionContext();
 
-	function handleSignOut() {
-		Alert.alert("Sign Out", "Are you sure you want to sign out?", [
-			{ text: "Cancel", style: "cancel" },
-			{ text: "Sign Out", onPress: signOut, style: "destructive" },
-		]);
+	async function handleSignOut() {
+		Alert.alert("Sign out", "Are you sure you want to sign out?", [
+			{
+				text: "Cancel",
+				style: "cancel",
+			},
+			{
+				text: "Sign Out",
+				style: "destructive",
+				onPress: async () => {
+					await signOut();
+					router.replace("/");
+				},
+			},
+		],{cancelable: true});
 	}
 
 	return (
