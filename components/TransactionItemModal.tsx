@@ -6,6 +6,7 @@ import {
 	ScrollView,
 	Button,
 } from "react-native";
+import { useTransactionsContext } from "@/context/transactionsContext";
 
 interface TransactionItemModalProps {
 	modalVisible: boolean;
@@ -18,6 +19,8 @@ export default function TransactionItemModal({
 	setModalVisible,
 	selectedTransaction,
 }: TransactionItemModalProps) {
+	const { deleteTransaction, getTransactions } = useTransactionsContext();
+
 	function formatDate(dateString: Date | string) {
 		const date = new Date(dateString);
 		const day = date.getDate();
@@ -25,6 +28,13 @@ export default function TransactionItemModal({
 		const year = date.getFullYear();
 		return `${month} ${day}, ${year}`;
 	}
+
+	async function hanadleDelete() {
+		await deleteTransaction(selectedTransaction.id);
+		setModalVisible(false);
+		getTransactions();
+	}
+
 	return (
 		<Modal
 			animationType="slide"
@@ -61,7 +71,7 @@ export default function TransactionItemModal({
 							<Text>{selectedTransaction?.note || "No note"}</Text>
 						</View>
 					</ScrollView>
-					<Button title="Delete" onPress={() => console.log("delete")} />
+					<Button title="Delete" onPress={hanadleDelete} />
 					<Button title="Close" onPress={() => setModalVisible(false)} />
 				</View>
 			</View>
