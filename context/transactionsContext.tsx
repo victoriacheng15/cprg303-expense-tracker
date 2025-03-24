@@ -24,6 +24,7 @@ const TransactionsContext = createContext<TransactionsContextType>({
 	updateTransaction: () => {},
 	resetTransaction: () => {},
 	AddTransaction: async () => {},
+	deleteTransaction: async () => {},
 	getTransactions: () => {},
 });
 
@@ -141,6 +142,16 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 		resetTransaction();
 	}
 
+	async function deleteTransaction(id: string) {
+		const { error } = await supabase.from("expenses").delete().eq("id", id);
+
+		if (error) {
+			console.error(`Error deleting transaction: ${error.message}`);
+			Alert.alert("Error", "Failed to delete transaction. Please try again.");
+			return;
+		}
+	}
+
 	return (
 		<TransactionsContext.Provider
 			value={{
@@ -153,6 +164,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 				transactionItem,
 				AddTransaction,
 				updateTransaction,
+				deleteTransaction,
 				resetTransaction,
 				getTransactions,
 			}}
