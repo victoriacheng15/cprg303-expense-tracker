@@ -1,5 +1,5 @@
 import { Alert, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
+import { Redirect } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSessionContext } from "@/context/sessionContext";
 
@@ -25,7 +25,7 @@ export default function Logout({ size, color }: LogoutProps) {
 					style: "destructive",
 					onPress: async () => {
 						await signOut();
-						router.replace("/");
+						<Redirect href="/" />;
 					},
 				},
 			],
