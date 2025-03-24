@@ -19,6 +19,7 @@ interface TransactionsContextType {
 	) => void;
 	resetTransaction: () => void;
 	AddTransaction: () => Promise<void>;
+	deleteTransaction: (id: string) => Promise<void>;
 	getTransactions: () => void;
 }
 
