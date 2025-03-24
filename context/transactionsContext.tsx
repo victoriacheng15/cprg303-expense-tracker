@@ -33,8 +33,6 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 	const { session } = useSessionContext();
 	const user = session?.user;
 
-	if (!user) return null;
-
 	const [transactions, setTransactions] = useState<TransactionItem[]>([]);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [datePickerConfig, setDatePickerConfig] = useState<DatePickerConfig>({
@@ -74,6 +72,11 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 
 		setTransactions(reorganizedData);
 	}
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		getTransactions();
+	}, [user]);
 
 	function showDatepicker() {
 		setDatePickerConfig((prev) => ({ ...prev, show: true }));
@@ -137,11 +140,6 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 
 		resetTransaction();
 	}
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-	useEffect(() => {
-		getTransactions();
-	}, []);
 
 	return (
 		<TransactionsContext.Provider
