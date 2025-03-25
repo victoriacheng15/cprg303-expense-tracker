@@ -55,6 +55,31 @@ export default function TransactionItemModal({
 		);
 	}
 
+	const fields = [
+		{
+			label: "Name",
+			value: selectedTransaction?.name,
+		},
+		{
+			label: "Category",
+			value: selectedTransaction?.category_name,
+		},
+		{
+			label: "Date",
+			value: selectedTransaction?.date
+				? formatDate(new Date(selectedTransaction.date))
+				: "No date available",
+		},
+		{
+			label: "Amount",
+			value: `$${selectedTransaction?.amount}`,
+		},
+		{
+			label: "Note",
+			value: selectedTransaction?.note || "No note availabile",
+		},
+	];
+
 	return (
 		<Modal
 			animationType="slide"
@@ -66,30 +91,12 @@ export default function TransactionItemModal({
 				<View style={styles.modalContent}>
 					<Text style={styles.modalTitle}>Transaction Details</Text>
 					<ScrollView style={{ flexGrow: 1 }}>
-						<View style={styles.infoContainer}>
-							<Text style={styles.modalText}>Name:</Text>
-							<Text>{selectedTransaction?.name}</Text>
-						</View>
-						<View style={styles.infoContainer}>
-							<Text style={styles.modalText}>Category:</Text>
-							<Text>{selectedTransaction?.category_name}</Text>
-						</View>
-						<View style={styles.infoContainer}>
-							<Text style={styles.modalText}>Amount:</Text>
-							<Text>{`${selectedTransaction?.amount.toFixed(2)}`}</Text>
-						</View>
-						<View style={styles.infoContainer}>
-							<Text style={styles.modalText}>Date:</Text>
-							<Text>
-								{selectedTransaction?.date
-									? formatDate(new Date(selectedTransaction.date))
-									: "No date available"}
-							</Text>
-						</View>
-						<View style={styles.infoContainer}>
-							<Text style={styles.modalText}>Note:</Text>
-							<Text>{selectedTransaction?.note || "No note"}</Text>
-						</View>
+						{fields.map(({ label, value }) => (
+							<View key={label} style={styles.infoContainer}>
+								<Text style={styles.modalText}>{label}:</Text>
+								<Text>{value}</Text>
+							</View>
+						))}
 					</ScrollView>
 					<Button title="Delete" onPress={hanadleDelete} />
 					<Button title="Close" onPress={() => setModalVisible(false)} />
