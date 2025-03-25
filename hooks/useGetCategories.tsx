@@ -1,14 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
-interface CategoryState {
-	categories: Category[];
-	loading: boolean;
-	error: Error | null;
-}
-
-type selectedCategory = Category | null;
-
 export function useGetCategories() {
 	const [categoryState, setCategoryState] = useState<CategoryState>({
 		categories: [],

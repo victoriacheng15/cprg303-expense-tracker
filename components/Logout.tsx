@@ -3,11 +3,6 @@ import { Redirect } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSessionContext } from "@/context/sessionContext";
 
-interface LogoutProps {
-	size: number;
-	color: string;
-}
-
 export default function Logout({ size, color }: LogoutProps) {
 	const { signOut } = useSessionContext();
 
