@@ -94,3 +94,11 @@ interface CategoryDropdownProps {
 	selectedCategory: Category | null;
 	onSelect: (category: Category) => void;
 }
+
+interface Profile {
+	firstName: string;
+	lastName: string;
+	email: string;
+	updated_at: Date | string;
+	requiresNameUpdate?: boolean;
+}
