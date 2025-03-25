@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, FlatList } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { globalStyle } from "@/constants/";
 import TransactionItem from "@/components/TransactionItem";
-import ModalButton from "@/components/ModalButton";
+import TransactionModalButton from "@/components/TransactionModalButton";
 import TransactionModal from "@/components/TransactionModal";
 
 export default function Dashboard() {
@@ -41,7 +41,7 @@ export default function Dashboard() {
 			</View>
 
 			{/* Button to open the add new transaction modal */}
-			<ModalButton onPress={() => setModalVisible(true)} />
+			<TransactionModalButton onPress={() => setModalVisible(true)} />
 			{/* Modal for Adding a New Transaction */}
 			<TransactionModal />
 		</View>

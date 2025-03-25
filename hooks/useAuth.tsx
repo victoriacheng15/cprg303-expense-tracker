@@ -16,7 +16,7 @@ export function useAuth() {
 				throw new Error(error.message);
 			}
 		} catch (error) {
-			console.error("Error during sign-in:", error);
+			console.error(`Error during sign-in: ${error}`);
 		}
 	}
 
@@ -32,7 +32,7 @@ export function useAuth() {
 			console.log("Signed out!");
 			router.replace("/");
 		} catch (error) {
-			console.error("Error during sign-out:", error);
+			console.error(`Error during sign-out: ${error}`);
 		}
 	}
 	return {

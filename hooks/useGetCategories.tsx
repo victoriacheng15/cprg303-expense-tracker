@@ -39,7 +39,7 @@ export function useGetCategories() {
 				loading: false,
 			}));
 		} catch (error) {
-			console.error("Error fetching categories:", error);
+			console.error(`Error fetching categories: ${error}`);
 			setCategoryState((prev) => ({
 				...prev,
 				loading: false,

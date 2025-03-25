@@ -2,7 +2,9 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/constants/";
 
-export default function ModalButton({ onPress }: { onPress: () => void }) {
+export default function TransactionModalButton({
+	onPress,
+}: { onPress: () => void }) {
 	return (
 		<TouchableOpacity style={styles.button} onPress={onPress}>
 			<MaterialIcons name="add" size={24} color={colors.primary.darkBlue} />
