@@ -42,10 +42,8 @@ export function useManageProfile() {
 						);
 					}
 				}
-
-				console.log("User data:", data);
 			} catch (error) {
-				console.error("Error fetching user data:", error);
+				console.error(`Error fetching user profile: ${error}`);
 			}
 		}
 
@@ -77,7 +75,7 @@ export function useManageProfile() {
 			setIsEditing(false);
 		} catch (error) {
 			Alert.alert("Error", "Failed to update profile");
-			console.error("Update error:", error);
+			console.error(`Update error: ${error}`);
 		} finally {
 			setIsDeleting(false);
 		}
@@ -115,11 +113,11 @@ export function useManageProfile() {
 			await signOut();
 			Alert.alert("Success", "Your account has been permanently deleted");
 		} catch (error) {
-			console.error("Account deletion failed:", error);
 			Alert.alert(
 				"Error",
 				"Failed to delete account. Please try again or contact support.",
 			);
+			console.error(`Error deleting account: ${error}`);
 		}
 	}
 
