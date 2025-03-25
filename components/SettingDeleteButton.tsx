@@ -1,10 +1,5 @@
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
-interface SettingDeleteButtonProps {
-	isDeleting: boolean;
-	confirmDelete: () => void;
-}
-
 export default function SettingDeleteButton({
 	isDeleting,
 	confirmDelete,
