@@ -5,14 +5,15 @@ interface SessionContextType {
 }
 
 interface TransactionsContextType {
-	transactions: TransactionItem[];
-	transactionItem: TransactionItem;
 	modalVisible: boolean;
 	datePickerConfig: DatePickerConfig;
 	setModalVisible: (visible: boolean) => void;
 	showDatepicker: () => void;
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	onDateChange: (_: any, selectedDate?: Date) => void;
+	transactions: TransactionItem[];
+	transactionItem: TransactionItem;
+	isTransactionLoading: boolean;
 	updateTransaction: (
 		field: keyof TransactionItem,
 		value: string | number,

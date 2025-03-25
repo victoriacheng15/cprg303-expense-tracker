@@ -13,14 +13,20 @@ const transactionObj = {
 	note: "",
 };
 
+const datePickerConfigObj: DatePickerConfig = {
+	show: false,
+	mode: "date",
+};
+
 const TransactionsContext = createContext<TransactionsContextType>({
 	transactions: [],
 	transactionItem: transactionObj,
 	modalVisible: false,
-	datePickerConfig: { show: false, mode: "date" },
+	datePickerConfig: datePickerConfigObj,
 	setModalVisible: () => {},
 	showDatepicker: () => {},
 	onDateChange: () => {},
+	isTransactionLoading: false,
 	updateTransaction: () => {},
 	resetTransaction: () => {},
 	AddTransaction: async () => {},
@@ -34,50 +40,58 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 	const { session } = useSessionContext();
 	const user = session?.user;
 
-	const [transactions, setTransactions] = useState<TransactionItem[]>([]);
 	const [modalVisible, setModalVisible] = useState(false);
-	const [datePickerConfig, setDatePickerConfig] = useState<DatePickerConfig>({
-		show: false,
-		mode: "date",
-	});
+	const [transactions, setTransactions] = useState<TransactionItem[]>([]);
+	const [datePickerConfig, setDatePickerConfig] =
+		useState<DatePickerConfig>(datePickerConfigObj);
+	const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 	const [transactionItem, setTransactionItem] =
 		useState<TransactionItem>(transactionObj);
 
 	const { name, amount, category, date, note } = transactionItem;
 
 	async function getTransactions() {
-		const { data: transactionsQuery, error } = await supabase
-			.from("expenses")
-			.select("*")
-			.eq("user_id", user.id)
-			.select(
-				"id, name, amount, category_id, date, note, categories(category_name)",
+		try {
+			setIsTransactionLoading(true);
+			const { data: transactionsQuery, error } = await supabase
+				.from("expenses")
+				.select("*")
+				.eq("user_id", user.id)
+				.select(
+					"id, name, amount, category_id, date, note, categories(category_name)",
+				);
+
+			if (error) {
+				console.error(`Error fetching transactions: ${error.message}`);
+				return;
+			}
+
+			const reorganizedData: TransactionItem[] = transactionsQuery.map(
+				(item) => ({
+					id: item.id,
+					category: item.category_id,
+					category_name: item.categories?.category_name,
+					name: item.name,
+					amount: item.amount,
+					date: item.date,
+					note: item.note,
+				}),
 			);
 
-		if (error) {
-			console.error(`Error fetching transactions: ${error.message}`);
-			return;
+			setTransactions(reorganizedData);
+		} catch (error) {
+			console.error(`Error fetching transactions: ${error}`);
+		} finally {
+			setIsTransactionLoading(false);
 		}
-
-		const reorganizedData: TransactionItem[] = transactionsQuery.map(
-			(item) => ({
-				id: item.id,
-				category: item.category_id,
-				category_name: item.categories?.category_name,
-				name: item.name,
-				amount: item.amount,
-				date: item.date,
-				note: item.note,
-			}),
-		);
-
-		setTransactions(reorganizedData);
 	}
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		getTransactions();
-	}, [user]);
+		if (user?.id) {
+			getTransactions();
+		}
+	}, [user?.id]);
 
 	function showDatepicker() {
 		setDatePickerConfig((prev) => ({ ...prev, show: true }));
@@ -160,6 +174,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 				datePickerConfig,
 				showDatepicker,
 				onDateChange,
+				isTransactionLoading,
 				transactions,
 				transactionItem,
 				AddTransaction,

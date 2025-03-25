@@ -4,6 +4,7 @@ interface ChildrenProps {
 
 interface TransactionItemProps {
 	isIncome: boolean;
+	name: string;
 	category: string;
 	amountText: string;
 	id: string;
