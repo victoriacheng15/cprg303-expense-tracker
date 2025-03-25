@@ -6,8 +6,28 @@ import TransactionModalButton from "@/components/TransactionModalButton";
 import TransactionModal from "@/components/TransactionModal";
 
 export default function Dashboard() {
-	const { setModalVisible, transactions } = useTransactionsContext();
+	const { setModalVisible, isTransactionLoading, transactions } =
+		useTransactionsContext();
+
 	const incomeCategories = ["Salary", "Freelance", "Investment"];
+
+	if (isTransactionLoading) {
+		return (
+			<View style={globalStyle.container}>
+				<Text>Loading transactions...</Text>
+			</View>
+		);
+	}
+
+	if (!transactions.length) {
+		return (
+			<View style={globalStyle.container}>
+				<Text>No transactions found</Text>
+				<TransactionModalButton onPress={() => setModalVisible(true)} />
+				<TransactionModal />
+			</View>
+		);
+	}
 
 	// console.log("Transactions:", transactions);
 
