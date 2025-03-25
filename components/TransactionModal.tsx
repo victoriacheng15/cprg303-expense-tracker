@@ -19,11 +19,9 @@ export default function TransactionModal() {
 	} = useTransactionsContext();
 	const { name, amount, date, note } = transactionItem;
 	const { show, mode } = datePickerConfig;
-	const {
-		categoryState: { categories, loading, error },
-		selectedCategory,
-		setSelectedCategory,
-	} = useGetCategories();
+	const { categoryState, selectedCategory, setSelectedCategory } =
+		useGetCategories();
+	const { categories, loading, error } = categoryState;
 
 	function handleCancel() {
 		setModalVisible(false);
