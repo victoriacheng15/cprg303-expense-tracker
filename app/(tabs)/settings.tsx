@@ -20,18 +20,21 @@ export default function SettingsScreen() {
 		{
 			key: "firstName",
 			label: "First Name",
+			value: userProfile.firstName,
 			editable: isEditing || userProfile.requiresNameUpdate,
 			keyboardType: "default" as const,
 		},
 		{
 			key: "lastName",
 			label: "Last Name",
+			value: userProfile.lastName,
 			editable: isEditing || userProfile.requiresNameUpdate,
 			keyboardType: "default" as const,
 		},
 		{
 			key: "email",
 			label: "Email",
+			value: userProfile.email,
 			editable: false,
 			keyboardType: "email-address" as const,
 		},
@@ -42,15 +45,15 @@ export default function SettingsScreen() {
 			<View style={styles.settingContainer}>
 				<View style={styles.section}>
 					<Text style={styles.header}>Account Information</Text>
-					{fields.map(({ key, label, editable, keyboardType }) => (
+					{fields.map(({ key, label, value, editable, keyboardType }) => (
 						<View key={key}>
-							<Text style={styles.label}>{label}</Text>
+							<Text style={styles.label}>{label}:</Text>
 							<TextInput
 								style={styles.input}
-								value={userProfile[key]}
+								value={value}
 								onChangeText={(text) => handleInputChange(key, text)}
 								editable={editable}
-								keyboardType={key === "email" ? "email-address" : "default"}
+								keyboardType={keyboardType}
 							/>
 						</View>
 					))}
