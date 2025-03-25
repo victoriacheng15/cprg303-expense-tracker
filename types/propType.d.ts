@@ -33,3 +33,26 @@ interface SettingDeleteButtonProps {
 	isDeleting: boolean;
 	confirmDelete: () => void;
 }
+
+interface VisualizationPickerProps {
+	selectedValue: string | null;
+	onValueChange: (value: string | null) => void;
+	dropdownIconColor?: string;
+	mode?: "dropdown" | "dialog";
+	enabled: boolean;
+	itemLabel: string;
+	itemsList: { label: string; value: string }[];
+}
+
+interface VisualizationFilterProps {
+	year: string | null;
+	month: string | null;
+	category: string | null;
+	availableYears: string[];
+	filteredMonths: { label: string; value: string }[];
+	availableCategories: { label: string; value: string }[];
+	handleFilterSelect: (
+		type: "year" | "month" | "category",
+		value: string | null,
+	) => void;
+}
