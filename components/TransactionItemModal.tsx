@@ -8,12 +8,7 @@ import {
 	Alert,
 } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
-
-interface TransactionItemModalProps {
-	modalVisible: boolean;
-	setModalVisible: (visible: boolean) => void;
-	selectedTransaction: TransactionItem;
-}
+import { useFormatDate } from "@/hooks/useFormatDate";
 
 export default function TransactionItemModal({
 	modalVisible,
@@ -21,14 +16,7 @@ export default function TransactionItemModal({
 	selectedTransaction,
 }: TransactionItemModalProps) {
 	const { deleteTransaction, getTransactions } = useTransactionsContext();
-
-	function formatDate(dateString: Date | string) {
-		const date = new Date(dateString);
-		const day = date.getDate();
-		const month = date.toLocaleString("default", { month: "short" });
-		const year = date.getFullYear();
-		return `${month} ${day}, ${year}`;
-	}
+	const { formatDate } = useFormatDate();
 
 	async function hanadleDelete() {
 		Alert.alert(
