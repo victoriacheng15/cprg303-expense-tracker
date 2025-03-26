@@ -79,11 +79,9 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 				}),
 			);
 
-			const sortedTransactionsByDate = [...restructuredData]
-				.sort((a, b) => {
-					return new Date(b.date).getTime() - new Date(a.date).getTime();
-				})
-				.slice(0, 20);
+			const sortedTransactionsByDate = [...restructuredData].sort((a, b) => {
+				return new Date(b.date).getTime() - new Date(a.date).getTime();
+			});
 
 			setTransactions(sortedTransactionsByDate);
 		} catch (error) {
