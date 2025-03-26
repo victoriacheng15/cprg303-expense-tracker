@@ -5,9 +5,9 @@ export default function VisualizationFilter({
 	year,
 	month,
 	category,
-	availableYears,
+	filteredYears,
 	filteredMonths,
-	availableCategories,
+	filteredCategories,
 	handleFilterSelect,
 }: VisualizationFilterProps) {
 	return (
@@ -23,7 +23,7 @@ export default function VisualizationFilter({
 						mode="dropdown"
 						enabled={true}
 						itemLabel="Year"
-						itemsList={availableYears.map((y) => ({ label: y, value: y }))}
+						itemsList={filteredYears.map((y) => ({ label: y, value: y }))}
 					/>
 				</View>
 
@@ -34,7 +34,7 @@ export default function VisualizationFilter({
 						onValueChange={(value) => handleFilterSelect("month", value)}
 						// dropdownIconColor="#007AFF"
 						mode="dropdown"
-						enabled={!!year}
+						enabled={true}
 						itemLabel={"Month"}
 						itemsList={filteredMonths}
 					/>
@@ -50,7 +50,7 @@ export default function VisualizationFilter({
 					mode="dropdown"
 					enabled={true}
 					itemLabel="Select Category"
-					itemsList={availableCategories}
+					itemsList={filteredCategories}
 				/>
 			</View>
 		</>
@@ -64,11 +64,10 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	pickerContainer: {
-		backgroundColor: "white",
-		borderRadius: 8,
+		backgroundColor: "#ff",
+		borderRadius: 5,
 		borderWidth: 1,
 		borderColor: "#e0e0e0",
-		overflow: "hidden",
 	},
 	halfWidth: {
 		width: "48%",

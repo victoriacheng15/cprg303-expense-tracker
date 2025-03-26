@@ -34,3 +34,9 @@ interface Profile {
 	updated_at: Date | string;
 	requiresNameUpdate?: boolean;
 }
+
+interface FilterTypes {
+	year: string | null;
+	month: string | null;
+	category: string | null;
+}

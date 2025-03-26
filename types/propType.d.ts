@@ -48,9 +48,9 @@ interface VisualizationFilterProps {
 	year: string | null;
 	month: string | null;
 	category: string | null;
-	availableYears: string[];
+	filteredYears: string[];
 	filteredMonths: { label: string; value: string }[];
-	availableCategories: { label: string; value: string }[];
+	filteredCategories: { label: string; value: string }[];
 	handleFilterSelect: (
 		type: "year" | "month" | "category",
 		value: string | null,
