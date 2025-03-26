@@ -25,10 +25,12 @@ export default function Dashboard() {
 	if (isTransactionLoading && !refreshing) {
 		return (
 			<View style={globalStyle.container}>
-				<Text style={styles.text}>Loading transactions...</Text>
-				<Text style={styles.text}>
-					If this takes too long to load, try to swap down to refresh
-				</Text>
+				<View style={styles.transactionContainer}>
+					<Text style={styles.text}>Loading transactions...</Text>
+					<Text style={styles.text}>
+						If this takes too long to load, try to swap down to refresh
+					</Text>
+				</View>
 			</View>
 		);
 	}
@@ -36,9 +38,11 @@ export default function Dashboard() {
 	if (!transactions.length && !refreshing) {
 		return (
 			<View style={globalStyle.container}>
-				<Text style={styles.text}>No transactions found</Text>
-				<TransactionModalButton onPress={() => setModalVisible(true)} />
-				<TransactionModal />
+				<View style={styles.transactionContainer}>
+					<Text style={styles.text}>No transactions found</Text>
+					<TransactionModalButton onPress={() => setModalVisible(true)} />
+					<TransactionModal />
+				</View>
 			</View>
 		);
 	}
