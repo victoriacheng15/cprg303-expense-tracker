@@ -67,7 +67,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 				throw new Error(`Supabase get transactions error: ${error.message}`);
 			}
 
-			const reorganizedData: TransactionItem[] = transactionsQuery.map(
+			const restructuredData: TransactionItem[] = transactionsQuery.map(
 				(item) => ({
 					id: item.id,
 					category: item.category_id,
@@ -79,7 +79,13 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 				}),
 			);
 
-			setTransactions(reorganizedData);
+			const sortedTransactionsByDate = [...restructuredData]
+				.sort((a, b) => {
+					return new Date(b.date).getTime() - new Date(a.date).getTime();
+				})
+				.slice(0, 20);
+
+			setTransactions(sortedTransactionsByDate);
 		} catch (error) {
 			console.error(`Error fetching transactions: ${error}`);
 		} finally {
