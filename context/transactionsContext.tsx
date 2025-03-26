@@ -32,6 +32,7 @@ const TransactionsContext = createContext<TransactionsContextType>({
 	AddTransaction: async () => {},
 	deleteTransaction: async () => {},
 	getTransactions: () => {},
+	incomeCategories: [],
 });
 
 export const useTransactionsContext = () => useContext(TransactionsContext);
@@ -49,6 +50,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 		useState<TransactionItem>(transactionObj);
 
 	const { name, amount, category, date, note } = transactionItem;
+	const incomeCategories = ["Salary", "Freelance", "Investment"];
 
 	async function getTransactions() {
 		try {
@@ -182,6 +184,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 				deleteTransaction,
 				resetTransaction,
 				getTransactions,
+				incomeCategories,
 			}}
 		>
 			{children}
