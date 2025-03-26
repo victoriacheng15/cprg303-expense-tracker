@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import { useState, useCallback } from "react";
+import { StyleSheet, View, Text, FlatList, RefreshControl } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { globalStyle } from "@/constants/";
 import TransactionItem from "@/components/TransactionItem";
@@ -6,23 +7,36 @@ import TransactionModalButton from "@/components/TransactionModalButton";
 import TransactionModal from "@/components/TransactionModal";
 
 export default function Dashboard() {
-	const { setModalVisible, isTransactionLoading, transactions } =
-		useTransactionsContext();
+	const {
+		setModalVisible,
+		isTransactionLoading,
+		transactions,
+		getTransactions,
+		incomeCategories,
+	} = useTransactionsContext();
+	const [refreshing, setRefreshing] = useState(false);
 
-	const incomeCategories = ["Salary", "Freelance", "Investment"];
+	const handleRefresh = useCallback(async () => {
+		setRefreshing(true);
+		await getTransactions(); // Use the existing context function
+		setRefreshing(false);
+	}, [getTransactions]);
 
-	if (isTransactionLoading) {
+	if (isTransactionLoading && !refreshing) {
 		return (
 			<View style={globalStyle.container}>
-				<Text>Loading transactions...</Text>
+				<Text style={styles.text}>Loading transactions...</Text>
+				<Text style={styles.text}>
+					If this takes too long to load, try to swap down to refresh
+				</Text>
 			</View>
 		);
 	}
 
-	if (!transactions.length) {
+	if (!transactions.length && !refreshing) {
 		return (
 			<View style={globalStyle.container}>
-				<Text>No transactions found</Text>
+				<Text style={styles.text}>No transactions found</Text>
 				<TransactionModalButton onPress={() => setModalVisible(true)} />
 				<TransactionModal />
 			</View>
@@ -40,6 +54,13 @@ export default function Dashboard() {
 				<FlatList
 					data={transactions}
 					keyExtractor={(item) => item.id}
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={handleRefresh}
+							colors={["#007AFF"]} // Android
+						/>
+					}
 					renderItem={({ item }) => {
 						const { id, category_name, name, amount } = item;
 						const isIncome = incomeCategories.includes(category_name);
@@ -80,5 +101,9 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: "bold",
 		marginBottom: 16,
+	},
+	text: {
+		fontSize: 18,
+		fontWeight: "semibold",
 	},
 });
