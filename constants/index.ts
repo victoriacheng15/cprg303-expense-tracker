@@ -16,4 +16,7 @@ const availableMonths = [
 	{ label: "December", value: "12" },
 ];
 
-export { colors, globalStyle, availableMonths };
+const currentYear = new Date().getFullYear().toString();
+const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, "0");
+
+export { colors, globalStyle, availableMonths, currentYear, currentMonth };
