@@ -22,4 +22,5 @@ interface TransactionsContextType {
 	AddTransaction: () => Promise<void>;
 	deleteTransaction: (id: string) => Promise<void>;
 	getTransactions: () => void;
+	incomeCategories: string[];
 }
