@@ -23,7 +23,9 @@ export function useGetCategories() {
 				.select("id, category_name")
 				.order("category_name", { ascending: true });
 
-			if (error) throw new Error(`Supabase error: ${error.message}`);
+			if (error) {
+				throw new Error(`Supabase get categories error: ${error.message}`);
+			}
 
 			setCategoryState((prev) => ({
 				...prev,

@@ -64,8 +64,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 				);
 
 			if (error) {
-				console.error(`Error fetching transactions: ${error.message}`);
-				return;
+				throw new Error(`Supabase get transactions error: ${error.message}`);
 			}
 
 			const reorganizedData: TransactionItem[] = transactionsQuery.map(
@@ -150,9 +149,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 		const { error } = await supabase.from("expenses").insert(newTransaction);
 
 		if (error) {
-			console.error(`Error adding transaction: ${error.message}`);
-			Alert.alert("Error", "Failed to add transaction. Please try again.");
-			return;
+			throw new Error(`Supabase add transaction error: ${error.message}`);
 		}
 
 		resetTransaction();
@@ -162,9 +159,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 		const { error } = await supabase.from("expenses").delete().eq("id", id);
 
 		if (error) {
-			console.error(`Error deleting transaction: ${error.message}`);
-			Alert.alert("Error", "Failed to delete transaction. Please try again.");
-			return;
+			throw new Error(`Supabase delete transaction error: ${error.message}`);
 		}
 	}
 
