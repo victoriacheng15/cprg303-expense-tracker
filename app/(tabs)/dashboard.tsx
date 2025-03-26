@@ -1,5 +1,13 @@
 import { useState, useCallback } from "react";
-import { StyleSheet, View, Text, FlatList, RefreshControl } from "react-native";
+import {
+	StyleSheet,
+	View,
+	Text,
+	FlatList,
+	RefreshControl,
+	ScrollView,
+	Dimensions,
+} from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { globalStyle } from "@/constants/";
 import TransactionItem from "@/components/TransactionItem";
@@ -16,74 +24,67 @@ export default function Dashboard() {
 	} = useTransactionsContext();
 	const [refreshing, setRefreshing] = useState(false);
 
+	const { width } = Dimensions.get("window");
+
 	const handleRefresh = useCallback(async () => {
 		setRefreshing(true);
-		await getTransactions(); // Use the existing context function
+		await getTransactions();
 		setRefreshing(false);
 	}, [getTransactions]);
-
-	if (isTransactionLoading && !refreshing) {
-		return (
-			<View style={globalStyle.container}>
-				<View style={styles.transactionContainer}>
-					<Text style={styles.text}>Loading transactions...</Text>
-					<Text style={styles.text}>
-						If this takes too long to load, try to swap down to refresh
-					</Text>
-				</View>
-			</View>
-		);
-	}
-
-	if (!transactions.length && !refreshing) {
-		return (
-			<View style={globalStyle.container}>
-				<View style={styles.transactionContainer}>
-					<Text style={styles.text}>No transactions found</Text>
-					<TransactionModalButton onPress={() => setModalVisible(true)} />
-					<TransactionModal />
-				</View>
-			</View>
-		);
-	}
 
 	// console.log("Transactions:", transactions);
 
 	return (
 		<View style={globalStyle.container}>
-			<View style={styles.transactionContainer}>
-				<Text style={styles.heading}>Recent Transactions</Text>
+			<ScrollView
+				style={{ width: width * 0.9 }}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={handleRefresh}
+						colors={["#007AFF"]}
+					/>
+				}
+			>
+				<View style={styles.transactionContainer}>
+					{isTransactionLoading && !refreshing ? (
+						<>
+							<Text style={styles.text}>Loading transactions...</Text>
+							<Text style={styles.text}>
+								If this takes too long to load, pull down to refresh
+							</Text>
+						</>
+					) : !transactions.length && !refreshing ? (
+						<Text style={styles.text}>No transactions found</Text>
+					) : (
+						<>
+							<Text style={styles.heading}>Recent Transactions</Text>
+							<FlatList
+								data={transactions.slice(0, 10)}
+								keyExtractor={(item) => item.id}
+								renderItem={({ item }) => {
+									const { id, category_name, name, amount } = item;
+									const isIncome = incomeCategories.includes(category_name);
+									const formattedAmount = isIncome
+										? `+$${amount.toFixed(2)}`
+										: `-$${amount.toFixed(2)}`;
 
-				{/* List of Transactions */}
-				<FlatList
-					data={transactions}
-					keyExtractor={(item) => item.id}
-					refreshControl={
-						<RefreshControl
-							refreshing={refreshing}
-							onRefresh={handleRefresh}
-							colors={["#007AFF"]} // Android
-						/>
-					}
-					renderItem={({ item }) => {
-						const { id, category_name, name, amount } = item;
-						const isIncome = incomeCategories.includes(category_name);
-						const formattedAmount = isIncome
-							? `+$${amount.toFixed(2)}`
-							: `-$${amount.toFixed(2)}`;
-
-						return (
-							<TransactionItem
-								id={id}
-								isIncome={isIncome}
-								name={name}
-								category={category_name}
-								amountText={formattedAmount}
+									return (
+										<TransactionItem
+											id={id}
+											isIncome={isIncome}
+											name={name}
+											category={category_name}
+											amountText={formattedAmount}
+										/>
+									);
+								}}
+								scrollEnabled={false}
 							/>
-						);
-					}}
-				/>
-			</View>
+						</>
+					)}
+				</View>
+			</ScrollView>
 
 			{/* Button to open the add new transaction modal */}
 			<TransactionModalButton onPress={() => setModalVisible(true)} />
@@ -97,7 +98,6 @@ const styles = StyleSheet.create({
 	transactionContainer: {
 		flex: 1,
 		backgroundColor: "#fff",
-		width: "100%",
 		padding: 20,
 		borderRadius: 10,
 	},
