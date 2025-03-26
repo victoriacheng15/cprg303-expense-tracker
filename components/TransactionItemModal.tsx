@@ -6,9 +6,12 @@ import {
 	ScrollView,
 	Button,
 	Alert,
+	Dimensions,
 } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { useFormatDate } from "@/hooks/useFormatDate";
+
+const { width } = Dimensions.get("window");
 
 export default function TransactionItemModal({
 	modalVisible,
@@ -26,6 +29,9 @@ export default function TransactionItemModal({
 				{
 					text: "Cancel",
 					style: "cancel",
+					onPress: () => {
+						setModalVisible(false);
+					},
 				},
 				{
 					text: "Delete",
@@ -39,6 +45,9 @@ export default function TransactionItemModal({
 			],
 			{
 				cancelable: true,
+				onDismiss: () => {
+					setModalVisible(false);
+				},
 			},
 		);
 	}
@@ -60,7 +69,7 @@ export default function TransactionItemModal({
 		},
 		{
 			label: "Amount",
-			value: `$${selectedTransaction?.amount}`,
+			value: `$${selectedTransaction?.amount.toFixed(2)}`,
 		},
 		{
 			label: "Note",
@@ -102,7 +111,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "rgba(0, 0, 0, 0.5)",
 	},
 	modalContent: {
-		width: 300,
+		width: width * 0.8,
 		backgroundColor: "white",
 		padding: 20,
 		borderRadius: 10,
@@ -115,6 +124,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 14,
 		borderBottomWidth: 1,
 		borderBottomColor: "#e0e0e0",
+		gap: 16,
 	},
 	modalTitle: {
 		fontSize: 20,
