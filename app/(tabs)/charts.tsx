@@ -12,14 +12,16 @@ export default function ChartsScreen() {
 		handleFilterSelect,
 		clearFilters,
 	} = useVisualization();
+	const { year, month, category } = filterTypes;
+	const noFiltersSelected = !year && !month && !category;
 
 	return (
 		<View style={globalStyle.container}>
 			<View style={styles.chartContainer}>
 				<VisualizationFilter
-					year={filterTypes.year}
-					month={filterTypes.month}
-					category={filterTypes.category}
+					year={year}
+					month={month}
+					category={category}
 					availableYears={availableYears}
 					filteredMonths={filteredMonths}
 					availableCategories={availableCategories}
@@ -29,15 +31,10 @@ export default function ChartsScreen() {
 				<Pressable
 					style={[
 						styles.clearButton,
-						!filterTypes.year &&
-							!filterTypes.month &&
-							!filterTypes.category &&
-							styles.disabledClearButton,
+						noFiltersSelected && styles.disabledClearButton,
 					]}
 					onPress={clearFilters}
-					disabled={
-						!filterTypes.year && !filterTypes.month && !filterTypes.category
-					}
+					disabled={noFiltersSelected}
 				>
 					<Text style={styles.clearButtonText}>Clear Filters</Text>
 				</Pressable>
