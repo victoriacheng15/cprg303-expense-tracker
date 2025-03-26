@@ -13,7 +13,7 @@ export function useAuth() {
 			});
 
 			if (error) {
-				throw new Error(error.message);
+				throw new Error(`Supabase sign-in error: ${error.message}`);
 			}
 		} catch (error) {
 			console.error(`Error during sign-in: ${error}`);
@@ -26,7 +26,7 @@ export function useAuth() {
 			const { error } = await supabase.auth.signOut();
 
 			if (error) {
-				throw new Error(error.message);
+				throw new Error(`Supabase sign-out error: ${error.message}`);
 			}
 
 			console.log("Signed out!");

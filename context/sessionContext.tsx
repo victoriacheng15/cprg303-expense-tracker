@@ -53,7 +53,9 @@ export function SessionProvider({ children }: ChildrenProps) {
 				refresh_token,
 			});
 
-			if (error) throw error;
+			if (error) {
+				throw new Error(`Supabase set session error: ${error.message}`);
+			}
 
 			setSession(data.session);
 		}

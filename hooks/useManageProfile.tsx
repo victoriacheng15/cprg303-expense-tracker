@@ -63,9 +63,7 @@ export function useManageProfile() {
 				.eq("user_id", session?.user.id);
 
 			if (error) {
-				Alert.alert("Error", "Failed to update profile");
-				console.error(`Update error: ${error.message}`);
-				return;
+				throw new Error(`Supabase update profile error: ${error.message}`);
 			}
 
 			setUserProfile((prev) => ({
@@ -107,7 +105,9 @@ export function useManageProfile() {
 				session?.user.id ?? "",
 			);
 
-			if (error) throw error;
+			if (error) {
+				throw new Error(`Supabase delete account error: ${error.message}`);
+			}
 
 			// Sign out and redirect
 			await signOut();
