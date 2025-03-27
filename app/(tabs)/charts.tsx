@@ -12,35 +12,12 @@ export default function ChartsScreen() {
 		filteredMonths,
 		filteredCategories,
 		handleFilterSelect,
-		incomeCategories,
-		getMonthlyTransactions,
-		getYearlyTransactions,
 		getMonthLabel,
+		monthlyData,
+		yearlyData,
 	} = useVisualization();
 	const { distinctColors } = useGenerateDistinctColor();
 	const { width } = Dimensions.get("window");
-
-	const categoryMonthlyData = getMonthlyTransactions.reduce<
-		Record<string, number>
-	>((acc, t) => {
-		const cat = t.category_name;
-		if (!incomeCategories.includes(cat)) {
-			acc[cat] = (acc[cat] || 0) + t.amount;
-		}
-
-		return acc;
-	}, {});
-
-	const categoryYearlyData = getYearlyTransactions.reduce<
-		Record<string, number>
-	>((acc, t) => {
-		const cat = t.category_name;
-		if (!incomeCategories.includes(cat)) {
-			acc[cat] = (acc[cat] || 0) + t.amount;
-		}
-
-		return acc;
-	}, {});
 
 	return (
 		<View style={globalStyle.container}>
@@ -54,49 +31,23 @@ export default function ChartsScreen() {
 					filteredCategories={filteredCategories}
 					handleFilterSelect={handleFilterSelect}
 				/>
-				<ScrollView>
+				<ScrollView style={{ flex: 1 }}>
 					<View style={styles.visualization}>
 						{/* Render your chart component here */}
 						<View style={styles.section}>
 							<Text style={styles.sectionTitle}>
-								Spending Data for {getMonthLabel(month)}, {year}
+								Incomes and Spendings for {getMonthLabel(month)}, {year}
 							</Text>
-							{Object.entries(categoryMonthlyData).length > 0 ? (
-								<PieChart
-									data={Object.entries(categoryMonthlyData)
-										.sort((a, b) => b[1] - a[1])
-										.map(([category, amount], index) => ({
-											name: category,
-											amount,
-											color: distinctColors[index],
-											legendFontColor: "#7F7F7F",
-										}))}
-									width={width * 0.9}
-									height={200}
-									accessor="amount"
-									backgroundColor="transparent"
-									paddingLeft={"5"}
-									chartConfig={{
-										color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-									}}
-									absolute
-								/>
-							) : (
-								<Text>No expenses this month</Text>
-							)}
-						</View>
-						<View style={styles.section}>
-							<Text style={styles.sectionTitle}>
-								Category Spending Data for {year}
-							</Text>
+							<Text style={styles.sectionSubTitle}>Income Distribution</Text>
 							<PieChart
-								data={Object.entries(categoryYearlyData)
+								data={Object.entries(monthlyData.incomes)
 									.sort((a, b) => b[1] - a[1])
 									.map(([category, amount], index) => ({
 										name: category,
 										amount,
 										color: distinctColors[index],
 										legendFontColor: "#7F7F7F",
+										legendFontSize: 14,
 									}))}
 								width={width * 0.9}
 								height={200}
@@ -106,10 +57,75 @@ export default function ChartsScreen() {
 								chartConfig={{
 									color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
 								}}
-								absolute
+							/>
+							<Text style={styles.sectionSubTitle}>Spending Distribution</Text>
+							<PieChart
+								data={Object.entries(monthlyData.spendings)
+									.sort((a, b) => b[1] - a[1])
+									.map(([category, amount], index) => ({
+										name: category,
+										amount,
+										color: distinctColors[index],
+										legendFontColor: "#7F7F7F",
+										legendFontSize: 14,
+									}))}
+								width={width * 0.9}
+								height={200}
+								accessor="amount"
+								backgroundColor="transparent"
+								paddingLeft={"15"}
+								chartConfig={{
+									color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+								}}
+							/>
+						</View>
+						<View style={styles.section}>
+							<Text style={styles.sectionTitle}>
+								Incomes and Spendings for {year}
+							</Text>
+							<Text style={styles.sectionSubTitle}>Income Distribution</Text>
+							<PieChart
+								data={Object.entries(yearlyData.incomes)
+									.sort((a, b) => b[1] - a[1])
+									.map(([category, amount], index) => ({
+										name: category,
+										amount,
+										color: distinctColors[index],
+										legendFontColor: "#7F7F7F",
+										legendFontSize: 14,
+									}))}
+								width={width * 0.9}
+								height={200}
+								accessor="amount"
+								backgroundColor="transparent"
+								paddingLeft={"15"}
+								chartConfig={{
+									color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+								}}
+							/>
+							<Text style={styles.sectionSubTitle}>Spending Distribution</Text>
+							<PieChart
+								data={Object.entries(yearlyData.spendings)
+									.sort((a, b) => b[1] - a[1])
+									.map(([category, amount], index) => ({
+										name: category,
+										amount,
+										color: distinctColors[index],
+										legendFontColor: "#7F7F7F",
+										legendFontSize: 14,
+									}))}
+								width={width * 0.9}
+								height={200}
+								accessor="amount"
+								backgroundColor="transparent"
+								paddingLeft={"15"}
+								chartConfig={{
+									color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+								}}
 							/>
 						</View>
 					</View>
+					<View style={styles.section}>{/*  */}</View>
 				</ScrollView>
 			</View>
 		</View>
@@ -129,12 +145,18 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		gap: 16,
 	},
-	sectionTitle: {
-		fontSize: 16,
-		fontWeight: "bold",
-	},
 	section: {
 		justifyContent: "center",
 		alignItems: "center",
+		flex: 1,
+	},
+	sectionTitle: {
+		fontSize: 16,
+		fontWeight: "bold",
+		marginBottom: 8,
+	},
+	sectionSubTitle: {
+		fontSize: 14,
+		marginBottom: 8,
 	},
 });
