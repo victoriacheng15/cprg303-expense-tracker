@@ -20,7 +20,7 @@ export default function TransactionModal() {
 		showDatepicker,
 		onDateChange,
 		transactionItem,
-		updateTransaction,
+		updateTransactionItem,
 		resetTransaction,
 		AddTransaction,
 		getTransactions,
@@ -57,7 +57,7 @@ export default function TransactionModal() {
 							style={styles.input}
 							placeholder="Enter name"
 							value={name}
-							onChangeText={(value) => updateTransaction("name", value)}
+							onChangeText={(value) => updateTransactionItem("name", value)}
 						/>
 					</View>
 
@@ -68,7 +68,7 @@ export default function TransactionModal() {
 							style={styles.input}
 							placeholder="Enter amount"
 							value={String(amount)}
-							onChangeText={(value) => updateTransaction("amount", value)}
+							onChangeText={(value) => updateTransactionItem("amount", value)}
 							keyboardType="numeric"
 						/>
 					</View>
@@ -83,7 +83,7 @@ export default function TransactionModal() {
 							selectedCategory={selectedCategory}
 							onSelect={(category) => {
 								setSelectedCategory(category);
-								updateTransaction("category", String(category.id));
+								updateTransactionItem("category", String(category.id));
 							}}
 						/>
 					</View>
@@ -119,7 +119,7 @@ export default function TransactionModal() {
 						style={styles.textarea}
 						placeholder="Enter note"
 						value={note}
-						onChangeText={(value) => updateTransaction("note", value)}
+						onChangeText={(value) => updateTransactionItem("note", value)}
 						multiline={true}
 						numberOfLines={4}
 						textAlignVertical="top"
