@@ -2,10 +2,10 @@ import { useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 
-export function useHandleProfile() {
-	const [shouldHandleProfile, setShouldHandleProfile] = useState(true);
+export function useCheckProfile() {
+	const [shouldCheckProfile, setShouldCheckProfile] = useState(true);
 
-	async function handleProfile(user: User) {
+	async function checkProfile(user: User) {
 		try {
 			const { error: fetchError } = await supabase
 				.from("profile")
@@ -30,8 +30,8 @@ export function useHandleProfile() {
 	}
 
 	return {
-		handleProfile,
-		shouldHandleProfile,
-		setShouldHandleProfile,
+		checkProfile,
+		shouldCheckProfile,
+		setShouldCheckProfile,
 	};
 }
