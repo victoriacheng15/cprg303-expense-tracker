@@ -4,7 +4,7 @@ import * as QueryParams from "expo-auth-session/build/QueryParams";
 import * as Linking from "expo-linking";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
-import { useHandleProfile } from "@/hooks/useHandleProfile";
+import { useCheckProfile } from "@/hooks/useCheckProfile";
 
 const SessionContext = createContext<SessionContextType>({
 	session: null,
@@ -16,8 +16,8 @@ export const useSessionContext = () => useContext(SessionContext);
 
 export function SessionProvider({ children }: ChildrenProps) {
 	const { signInWithEmail, signOut } = useAuth();
-	const { handleProfile, shouldHandleProfile, setShouldHandleProfile } =
-		useHandleProfile();
+	const { checkProfile, shouldCheckProfile, setShouldCheckProfile } =
+		useCheckProfile();
 	const [session, setSession] = useState<Session | null>(null);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -30,9 +30,9 @@ export function SessionProvider({ children }: ChildrenProps) {
 
 				setSession(session ?? null);
 
-				if (session?.user && shouldHandleProfile) {
-					await handleProfile(session.user);
-					setShouldHandleProfile(false);
+				if (session?.user && shouldCheckProfile) {
+					await checkProfile(session.user);
+					setShouldCheckProfile(false);
 				}
 			} catch (error) {
 				console.error(`Error fetching session: ${error}`);
@@ -67,9 +67,9 @@ export function SessionProvider({ children }: ChildrenProps) {
 			console.log(`Auth state changed: ${event}`);
 			setSession(session ?? null);
 
-			if (session?.user && shouldHandleProfile) {
-				await handleProfile(session.user);
-				setShouldHandleProfile(false);
+			if (session?.user && shouldCheckProfile) {
+				await checkProfile(session.user);
+				setShouldCheckProfile(false);
 			}
 		}
 
