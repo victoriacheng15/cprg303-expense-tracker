@@ -74,12 +74,24 @@ export function useVisualization() {
 
 	const getMonthlyTransactions = useMemo(() => {
 		if (!filterTypes.year || !filterTypes.month) return [];
-		return groupedTransactions[filterTypes.year]?.[filterTypes.month] || [];
+		return (
+			groupedTransactions[filterTypes.year]?.[filterTypes.month] || []
+		).map(({ amount, category_name, date }) => ({
+			amount,
+			category_name,
+			date,
+		}));
 	}, [filterTypes.year, filterTypes.month, groupedTransactions]);
 
 	const getYearlyTransactions = useMemo(() => {
 		if (!filterTypes.year) return [];
-		return Object.values(groupedTransactions[filterTypes.year] || {}).flat();
+		return Object.values(groupedTransactions[filterTypes.year] || {})
+			.flat()
+			.map(({ amount, category_name, date }) => ({
+				amount,
+				category_name,
+				date,
+			}));
 	}, [filterTypes.year, groupedTransactions]);
 
 	function handleFilterSelect(
