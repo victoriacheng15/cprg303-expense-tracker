@@ -40,3 +40,8 @@ interface FilterTypes {
 	month: string | null;
 	category: string | null;
 }
+
+interface VisualizationData {
+	incomes: Record<string, number>;
+	spendings: Record<string, number>;
+}
