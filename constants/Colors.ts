@@ -1,5 +1,3 @@
-import { StyleSheet } from "react-native";
-
 export const colors = {
 	primary: {
 		darkBlue: "#03045E",
@@ -20,10 +18,5 @@ export const colors = {
 		lightGray: "#F5F5F5",
 		mediumGray: "#CCCCCC",
 		darkGray: "#333333",
-	},
-	notification: {
-		yellow: "#FFD166",
-		green: "#06D6A0",
-		coral: "#FF6B6B",
 	},
 };
