@@ -27,9 +27,10 @@ const TransactionsContext = createContext<TransactionsContextType>({
 	showDatepicker: () => {},
 	onDateChange: () => {},
 	isTransactionLoading: false,
-	updateTransaction: () => {},
+	updateTransactionItem: () => {},
 	resetTransaction: () => {},
 	AddTransaction: async () => {},
+	updateTransaction: async () => {},
 	deleteTransaction: async () => {},
 	getTransactions: () => {},
 	incomeCategories: [],
@@ -112,8 +113,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 		setTransactionItem((prev) => ({ ...prev, date: formattedDate }));
 	}
 
-	// Helper function to update a specific field in the transaction
-	function updateTransaction(
+	function updateTransactionItem(
 		field: keyof TransactionItem,
 		value: string | number,
 	) {
@@ -151,6 +151,25 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 		resetTransaction();
 	}
 
+	async function updateTransaction(transactionItem: TransactionItem) {
+		const updatedTransaction = {
+			name: transactionItem.name,
+			amount: Number(transactionItem.amount),
+			category_id: transactionItem.category,
+			date: transactionItem.date,
+			note: transactionItem.note,
+		};
+
+		const { error } = await supabase
+			.from("expenses")
+			.update(updatedTransaction)
+			.eq("id", transactionItem.id);
+
+		if (error) {
+			throw new Error(`Supabase update transaction error: ${error.message}`);
+		}
+	}
+
 	async function deleteTransaction(id: string) {
 		const { error } = await supabase.from("expenses").delete().eq("id", id);
 
@@ -170,10 +189,11 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 				isTransactionLoading,
 				transactions,
 				transactionItem,
+				updateTransactionItem,
 				AddTransaction,
-				updateTransaction,
-				deleteTransaction,
 				resetTransaction,
+				deleteTransaction,
+				updateTransaction,
 				getTransactions,
 				incomeCategories,
 			}}
