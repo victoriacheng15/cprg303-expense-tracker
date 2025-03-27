@@ -37,4 +37,21 @@ export const globalStyle = StyleSheet.create({
 		fontSize: 16,
 		fontWeight: "bold",
 	},
+	buttonContainer: {
+		flexDirection: "row",
+		justifyContent: "space-around",
+		gap: 10,
+	},
+	button: {
+		backgroundColor: colors.primary.mediumBlue,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		borderRadius: 5,
+		alignItems: "center",
+	},
+	buttonText: {
+		color: "#fff",
+		fontSize: 16,
+		fontWeight: "bold",
+	},
 });

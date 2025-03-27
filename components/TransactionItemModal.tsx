@@ -4,7 +4,7 @@ import {
 	Text,
 	Modal,
 	ScrollView,
-	Button,
+	TouchableOpacity,
 	Alert,
 } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
@@ -93,8 +93,26 @@ export default function TransactionItemModal({
 							</View>
 						))}
 					</ScrollView>
-					<Button title="Delete" onPress={hanadleDelete} />
-					<Button title="Close" onPress={() => setModalVisible(false)} />
+					<View style={globalStyle.buttonContainer}>
+						<TouchableOpacity
+							onPress={() => setModalVisible(false)}
+							style={globalStyle.button}
+						>
+							<Text style={globalStyle.buttonText}>Close</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => console.log("editing...")}
+							style={globalStyle.button}
+						>
+							<Text style={globalStyle.buttonText}>Edit</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={hanadleDelete}
+							style={globalStyle.button}
+						>
+							<Text style={globalStyle.buttonText}>Delete</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
 			</View>
 		</Modal>
