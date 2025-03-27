@@ -1,5 +1,5 @@
 import { colors } from "./Colors";
-import { globalStyle } from "./styles";
+import { globalStyle, width as screenWidth } from "./styles";
 
 const availableMonths = [
 	{ label: "January", value: "01" },
@@ -19,4 +19,11 @@ const availableMonths = [
 const currentYear = new Date().getFullYear().toString();
 const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, "0");
 
-export { colors, globalStyle, availableMonths, currentYear, currentMonth };
+export {
+	colors,
+	globalStyle,
+	screenWidth,
+	availableMonths,
+	currentYear,
+	currentMonth,
+};

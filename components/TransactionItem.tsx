@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
+import { colors } from "@/constants/";
 import TransactionItemModal from "./TransactionItemModal";
 
 export default function TransactionItem({
@@ -71,9 +72,9 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 	},
 	negativeAmount: {
-		color: "#ff4444",
+		color: colors.accent.coral,
 	},
 	positiveAmount: {
-		color: "#00C851",
+		color: colors.primary.darkBlue,
 	},
 });

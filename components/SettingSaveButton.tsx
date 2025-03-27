@@ -4,21 +4,21 @@ export default function SettingSaveButton({
 	handleSave,
 }: { handleSave: () => void }) {
 	return (
-		<TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-			<Text style={styles.saveText}>Save Changes</Text>
+		<TouchableOpacity style={styles.button} onPress={handleSave}>
+			<Text style={styles.text}>Save Changes</Text>
 		</TouchableOpacity>
 	);
 }
 
 const styles = StyleSheet.create({
-	saveButton: {
+	button: {
 		backgroundColor: "#4CAF50",
 		padding: 10,
 		borderRadius: 5,
 		alignItems: "center",
 		marginTop: 10,
 	},
-	saveText: {
+	text: {
 		color: "white",
 		fontWeight: "bold",
 	},

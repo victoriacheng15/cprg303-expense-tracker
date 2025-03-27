@@ -6,12 +6,10 @@ import {
 	ScrollView,
 	Button,
 	Alert,
-	Dimensions,
 } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { useFormatDate } from "@/hooks/useFormatDate";
-
-const { width } = Dimensions.get("window");
+import { globalStyle, colors } from "@/constants/";
 
 export default function TransactionItemModal({
 	modalVisible,
@@ -84,13 +82,13 @@ export default function TransactionItemModal({
 			visible={modalVisible}
 			onRequestClose={() => setModalVisible(false)}
 		>
-			<View style={styles.modalOverlay}>
-				<View style={styles.modalContent}>
-					<Text style={styles.modalTitle}>Transaction Details</Text>
+			<View style={globalStyle.modalOverlay}>
+				<View style={globalStyle.modalContent}>
+					<Text style={globalStyle.modalTitle}>Transaction Details</Text>
 					<ScrollView style={{ flexGrow: 1 }}>
 						{fields.map(({ label, value }) => (
 							<View key={label} style={styles.infoContainer}>
-								<Text style={styles.modalText}>{label}:</Text>
+								<Text style={globalStyle.modalText}>{label}:</Text>
 								<Text>{value}</Text>
 							</View>
 						))}
@@ -104,34 +102,13 @@ export default function TransactionItemModal({
 }
 
 const styles = StyleSheet.create({
-	modalOverlay: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "rgba(0, 0, 0, 0.5)",
-	},
-	modalContent: {
-		width: width * 0.8,
-		backgroundColor: "white",
-		padding: 20,
-		borderRadius: 10,
-		gap: 20,
-	},
 	infoContainer: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
 		paddingVertical: 14,
 		borderBottomWidth: 1,
-		borderBottomColor: "#e0e0e0",
+		borderBottomColor: colors.neutral.mediumGray,
 		gap: 16,
-	},
-	modalTitle: {
-		fontSize: 20,
-		fontWeight: "bold",
-	},
-	modalText: {
-		fontSize: 18,
-		fontWeight: "500",
 	},
 });

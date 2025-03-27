@@ -1,6 +1,6 @@
-import { StyleSheet, View, Text, ScrollView, Dimensions } from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { PieChart } from "react-native-chart-kit";
-import { globalStyle } from "@/constants/";
+import { globalStyle, screenWidth } from "@/constants/";
 import { useVisualization } from "@/hooks/useVisualization";
 import { useGenerateDistinctColor } from "@/hooks/useGenerateDistinctColor";
 import VisualizationFilter from "@/components/VisualizationFilter";
@@ -17,7 +17,6 @@ export default function ChartsScreen() {
 		yearlyData,
 	} = useVisualization();
 	const { distinctColors } = useGenerateDistinctColor();
-	const { width } = Dimensions.get("window");
 
 	return (
 		<View style={globalStyle.container}>
@@ -49,7 +48,7 @@ export default function ChartsScreen() {
 										legendFontColor: "#7F7F7F",
 										legendFontSize: 14,
 									}))}
-								width={width * 0.9}
+								width={screenWidth * 0.9}
 								height={200}
 								accessor="amount"
 								backgroundColor="transparent"
@@ -69,7 +68,7 @@ export default function ChartsScreen() {
 										legendFontColor: "#7F7F7F",
 										legendFontSize: 14,
 									}))}
-								width={width * 0.9}
+								width={screenWidth * 0.9}
 								height={200}
 								accessor="amount"
 								backgroundColor="transparent"
@@ -94,7 +93,7 @@ export default function ChartsScreen() {
 										legendFontColor: "#7F7F7F",
 										legendFontSize: 14,
 									}))}
-								width={width * 0.9}
+								width={screenWidth * 0.9}
 								height={200}
 								accessor="amount"
 								backgroundColor="transparent"
@@ -114,7 +113,7 @@ export default function ChartsScreen() {
 										legendFontColor: "#7F7F7F",
 										legendFontSize: 14,
 									}))}
-								width={width * 0.9}
+								width={screenWidth * 0.9}
 								height={200}
 								accessor="amount"
 								backgroundColor="transparent"

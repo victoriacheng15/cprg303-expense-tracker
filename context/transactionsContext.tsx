@@ -122,15 +122,7 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 
 	// Reset transaction form
 	function resetTransaction() {
-		setTransactionItem({
-			id: "",
-			name: "",
-			amount: 0,
-			category: null,
-			category_name: "",
-			date: "",
-			note: "",
-		});
+		setTransactionItem(transactionObj);
 	}
 
 	async function AddTransaction() {
