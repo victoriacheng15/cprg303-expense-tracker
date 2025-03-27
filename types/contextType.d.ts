@@ -14,12 +14,13 @@ interface TransactionsContextType {
 	transactions: TransactionItem[];
 	transactionItem: TransactionItem;
 	isTransactionLoading: boolean;
-	updateTransaction: (
+	updateTransactionItem: (
 		field: keyof TransactionItem,
 		value: string | number,
 	) => void;
 	resetTransaction: () => void;
 	AddTransaction: () => Promise<void>;
+	updateTransaction: (transactionItem: TransactionItem) => Promise<void>;
 	deleteTransaction: (id: string) => Promise<void>;
 	getTransactions: () => void;
 	incomeCategories: string[];
