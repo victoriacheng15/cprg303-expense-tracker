@@ -94,6 +94,34 @@ export function useVisualization() {
 			}));
 	}, [filterTypes.year, groupedTransactions]);
 
+	const monthlyData = getMonthlyTransactions.reduce<VisualizationData>(
+		(acc, t) => {
+			const cat = t.category_name;
+			const isIncome = incomeCategories.includes(cat);
+			if (isIncome) {
+				acc.incomes[cat] = (acc.incomes[cat] || 0) + t.amount;
+			} else {
+				acc.spendings[cat] = (acc.spendings[cat] || 0) + t.amount;
+			}
+			return acc;
+		},
+		{ incomes: {}, spendings: {} },
+	);
+
+	const yearlyData = getYearlyTransactions.reduce<VisualizationData>(
+		(acc, t) => {
+			const cat = t.category_name;
+			const isIncome = incomeCategories.includes(cat);
+			if (isIncome) {
+				acc.incomes[cat] = (acc.incomes[cat] || 0) + t.amount;
+			} else {
+				acc.spendings[cat] = (acc.spendings[cat] || 0) + t.amount;
+			}
+			return acc;
+		},
+		{ incomes: {}, spendings: {} },
+	);
+
 	function handleFilterSelect(
 		type: "year" | "month" | "category",
 		value: string | null,
@@ -104,16 +132,13 @@ export function useVisualization() {
 
 	return {
 		filterTypes,
-		setFilterTypes,
-		filterDropdown,
-		setFilterDropdown,
 		filteredMonths,
 		filteredYears,
 		filteredCategories,
 		handleFilterSelect,
 		incomeCategories,
-		getMonthlyTransactions,
-		getYearlyTransactions,
 		getMonthLabel,
+		monthlyData,
+		yearlyData,
 	};
 }
