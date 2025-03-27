@@ -31,7 +31,7 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tab.Screen
-				name="Analysis"
+				name="Visualizations"
 				component={ChartsScreen}
 				options={{
 					tabBarIcon: ({ color, size }) => (
