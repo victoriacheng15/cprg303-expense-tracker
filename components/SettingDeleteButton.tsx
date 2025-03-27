@@ -6,11 +6,11 @@ export default function SettingDeleteButton({
 }: SettingDeleteButtonProps) {
 	return (
 		<TouchableOpacity
-			style={[styles.deleteButton, isDeleting && styles.disabledButton]}
+			style={[styles.button, isDeleting && styles.disabled]}
 			onPress={confirmDelete}
 			disabled={isDeleting}
 		>
-			<Text style={styles.deleteText}>
+			<Text style={styles.text}>
 				{isDeleting ? "Deleting..." : "Delete Account"}
 			</Text>
 		</TouchableOpacity>
@@ -22,17 +22,17 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontWeight: "bold",
 	},
-	deleteButton: {
+	button: {
 		backgroundColor: "#ff4d4d",
 		padding: 10,
 		borderRadius: 5,
 		alignItems: "center",
 	},
-	deleteText: {
+	text: {
 		color: "white",
 		fontWeight: "bold",
 	},
-	disabledButton: {
+	disabled: {
 		backgroundColor: "#ff8080",
 		flexDirection: "row",
 		gap: 8,

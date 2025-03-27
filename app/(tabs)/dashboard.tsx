@@ -6,10 +6,9 @@ import {
 	FlatList,
 	RefreshControl,
 	ScrollView,
-	Dimensions,
 } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
-import { globalStyle } from "@/constants/";
+import { globalStyle, screenWidth } from "@/constants/";
 import TransactionItem from "@/components/TransactionItem";
 import TransactionModalButton from "@/components/TransactionModalButton";
 import TransactionModal from "@/components/TransactionModal";
@@ -24,20 +23,16 @@ export default function Dashboard() {
 	} = useTransactionsContext();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { width } = Dimensions.get("window");
-
 	const handleRefresh = useCallback(async () => {
 		setRefreshing(true);
 		await getTransactions();
 		setRefreshing(false);
 	}, [getTransactions]);
 
-	// console.log("Transactions:", transactions);
-
 	return (
 		<View style={globalStyle.container}>
 			<ScrollView
-				style={{ width: width * 0.9 }}
+				style={{ width: screenWidth * 0.9 }}
 				refreshControl={
 					<RefreshControl
 						refreshing={refreshing}
@@ -58,7 +53,7 @@ export default function Dashboard() {
 						<Text style={styles.text}>No transactions found</Text>
 					) : (
 						<>
-							<Text style={styles.heading}>Recent Transactions</Text>
+							<Text style={globalStyle.title}>Recent Transactions</Text>
 							<FlatList
 								data={transactions.slice(0, 10)}
 								keyExtractor={(item) => item.id}
@@ -99,12 +94,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#fff",
 		padding: 20,
-		borderRadius: 10,
-	},
-	heading: {
-		fontSize: 20,
-		fontWeight: "bold",
-		marginBottom: 16,
+		borderRadius: 5,
 	},
 	text: {
 		fontSize: 18,

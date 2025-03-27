@@ -44,7 +44,7 @@ export default function SettingsScreen() {
 		<View style={globalStyle.container}>
 			<View style={styles.settingContainer}>
 				<View style={styles.section}>
-					<Text style={styles.header}>Account Information</Text>
+					<Text style={globalStyle.title}>Account Information</Text>
 					{fields.map(({ key, label, value, editable, keyboardType }) => (
 						<View key={key}>
 							<Text style={styles.label}>{label}:</Text>
@@ -66,7 +66,7 @@ export default function SettingsScreen() {
 				</View>
 
 				<View style={styles.section}>
-					<Text style={styles.header}>Danger Zone</Text>
+					<Text style={globalStyle.title}>Danger Zone</Text>
 					<SettingDeleteButton
 						isDeleting={isDeleting}
 						confirmDelete={confirmDelete}
@@ -83,18 +83,13 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		width: "100%",
 		padding: 20,
-		borderRadius: 10,
+		borderRadius: 5,
 		gap: 16,
-	},
-	header: {
-		fontSize: 20,
-		fontWeight: "bold",
-		marginBottom: 10,
 	},
 	section: {
 		backgroundColor: "#f8f8f8",
 		padding: 15,
-		borderRadius: 10,
+		borderRadius: 5,
 		gap: 16,
 	},
 	label: {

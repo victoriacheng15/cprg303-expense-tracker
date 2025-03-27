@@ -2,6 +2,7 @@ import { StyleSheet, Modal, View, Text, TextInput, Button } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { useGetCategories } from "@/hooks/useGetCategories";
+import { globalStyle } from "@/constants/";
 import CategoryDropdown from "./CategoyDropdown";
 
 export default function TransactionModal() {
@@ -39,8 +40,8 @@ export default function TransactionModal() {
 	return (
 		<Modal visible={modalVisible} animationType="slide" transparent={true}>
 			<View style={styles.modalContainer}>
-				<View style={styles.modalContent}>
-					<Text style={styles.modalTitle}>Add Transaction</Text>
+				<View style={globalStyle.modalContent}>
+					<Text style={globalStyle.modalTitle}>Add Transaction</Text>
 
 					{/* Name Input */}
 					<Text style={styles.label}>Name</Text>
@@ -121,22 +122,9 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		backgroundColor: "rgba(0, 0, 0, 0.5)",
 	},
-	modalContent: {
-		width: "80%",
-		backgroundColor: "white",
-		padding: 20,
-		borderRadius: 10,
-	},
-	modalTitle: {
-		fontSize: 18,
-		fontWeight: "bold",
-		marginBottom: 16,
-		textAlign: "center",
-	},
 	label: {
 		fontSize: 14,
 		fontWeight: "500",
-		marginBottom: 8,
 		color: "#333",
 	},
 	input: {
@@ -144,7 +132,6 @@ const styles = StyleSheet.create({
 		borderColor: "#ccc",
 		borderRadius: 5,
 		padding: 10,
-		marginBottom: 16,
 	},
 	buttonContainer: {
 		flexDirection: "row",
