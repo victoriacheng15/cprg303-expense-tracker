@@ -1,4 +1,11 @@
-import { StyleSheet, Modal, View, Text, TextInput, Button } from "react-native";
+import {
+	StyleSheet,
+	Modal,
+	View,
+	Text,
+	TextInput,
+	TouchableOpacity,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { useGetCategories } from "@/hooks/useGetCategories";
@@ -44,46 +51,56 @@ export default function TransactionModal() {
 					<Text style={globalStyle.modalTitle}>Add Transaction</Text>
 
 					{/* Name Input */}
-					<Text style={styles.label}>Name</Text>
-					<TextInput
-						style={styles.input}
-						placeholder="Enter name"
-						value={name}
-						onChangeText={(value) => updateTransaction("name", value)}
-					/>
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>Name:</Text>
+						<TextInput
+							style={styles.input}
+							placeholder="Enter name"
+							value={name}
+							onChangeText={(value) => updateTransaction("name", value)}
+						/>
+					</View>
 
 					{/* Amount Input */}
-					<Text style={styles.label}>Amount</Text>
-					<TextInput
-						style={styles.input}
-						placeholder="Enter amount"
-						value={String(amount)}
-						onChangeText={(value) => updateTransaction("amount", value)}
-						keyboardType="numeric"
-					/>
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>Amount:</Text>
+						<TextInput
+							style={styles.input}
+							placeholder="Enter amount"
+							value={String(amount)}
+							onChangeText={(value) => updateTransaction("amount", value)}
+							keyboardType="numeric"
+						/>
+					</View>
 
 					{/* Category Input */}
-					<Text style={styles.label}>Category</Text>
-					<CategoryDropdown
-						categories={categories}
-						loading={loading}
-						error={error}
-						selectedCategory={selectedCategory}
-						onSelect={(category) => {
-							setSelectedCategory(category);
-							updateTransaction("category", String(category.id));
-						}}
-					/>
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>Category:</Text>
+						<CategoryDropdown
+							categories={categories}
+							loading={loading}
+							error={error}
+							selectedCategory={selectedCategory}
+							onSelect={(category) => {
+								setSelectedCategory(category);
+								updateTransaction("category", String(category.id));
+							}}
+						/>
+					</View>
 
 					{/* Date Input */}
-					<Text style={styles.label}>Date</Text>
-					<TextInput
-						style={styles.input}
-						placeholder="YYYY-MM-DD"
-						value={date}
-						editable={false}
-					/>
-					<Button title="Select Date" onPress={showDatepicker} />
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>Date:</Text>
+						<TextInput
+							style={styles.input}
+							placeholder="YYYY-MM-DD"
+							value={date}
+							editable={false}
+						/>
+					</View>
+					<TouchableOpacity style={globalStyle.button} onPress={showDatepicker}>
+						<Text style={globalStyle.buttonText}>Select Date</Text>
+					</TouchableOpacity>
 					{show && (
 						<DateTimePicker
 							testID="dateTimePicker"
@@ -96,18 +113,27 @@ export default function TransactionModal() {
 					)}
 
 					{/* Note Input */}
-					<Text style={styles.label}>Note (Optional)</Text>
+					{/* <View style={styles.inputContainer}> */}
+					<Text style={styles.label}>Note (Optional):</Text>
 					<TextInput
-						style={styles.input}
+						style={styles.textarea}
 						placeholder="Enter note"
 						value={note}
 						onChangeText={(value) => updateTransaction("note", value)}
+						multiline={true}
+						numberOfLines={4}
+						textAlignVertical="top"
 					/>
+					{/* </View> */}
 
 					{/* Buttons */}
-					<View style={styles.buttonContainer}>
-						<Button title="Cancel" onPress={handleCancel} />
-						<Button title="Add" onPress={handleAdd} />
+					<View style={globalStyle.buttonContainer}>
+						<TouchableOpacity style={globalStyle.button} onPress={handleCancel}>
+							<Text style={globalStyle.buttonText}>Cancel</Text>
+						</TouchableOpacity>
+						<TouchableOpacity style={globalStyle.button} onPress={handleAdd}>
+							<Text style={globalStyle.buttonText}>Add</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</View>
@@ -127,14 +153,25 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 		color: "#333",
 	},
+	inputContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		gap: 10,
+	},
 	input: {
+		flex: 1,
 		borderWidth: 1,
 		borderColor: "#ccc",
 		borderRadius: 5,
 		padding: 10,
 	},
-	buttonContainer: {
-		flexDirection: "row",
-		justifyContent: "space-between",
+	textarea: {
+		height: 100,
+		borderWidth: 1,
+		borderColor: "#ccc",
+		borderRadius: 5,
+		padding: 10,
+		textAlignVertical: "top",
 	},
 });
