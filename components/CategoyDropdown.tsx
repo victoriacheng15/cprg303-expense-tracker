@@ -95,6 +95,7 @@ export default function CategoryDropdown({
 // Add these styles:
 const styles = StyleSheet.create({
 	dropdownTrigger: {
+		flex: 1,
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
