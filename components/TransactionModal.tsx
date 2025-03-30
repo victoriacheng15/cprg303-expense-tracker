@@ -1,16 +1,10 @@
-import {
-	StyleSheet,
-	Modal,
-	View,
-	Text,
-	TextInput,
-	TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Modal, View, Text, TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { useGetCategories } from "@/hooks/useGetCategories";
 import { globalStyle } from "@/constants/";
 import CategoryDropdown from "./CategoyDropdown";
+import ActionButton from "./ActionButton";
 
 export default function TransactionModal() {
 	const {
@@ -98,9 +92,7 @@ export default function TransactionModal() {
 							editable={false}
 						/>
 					</View>
-					<TouchableOpacity style={globalStyle.button} onPress={showDatepicker}>
-						<Text style={globalStyle.buttonText}>Select Date</Text>
-					</TouchableOpacity>
+					<ActionButton onPress={showDatepicker} text={"Select Date"} />
 					{show && (
 						<DateTimePicker
 							testID="dateTimePicker"
@@ -128,12 +120,8 @@ export default function TransactionModal() {
 
 					{/* Buttons */}
 					<View style={globalStyle.buttonContainer}>
-						<TouchableOpacity style={globalStyle.button} onPress={handleCancel}>
-							<Text style={globalStyle.buttonText}>Cancel</Text>
-						</TouchableOpacity>
-						<TouchableOpacity style={globalStyle.button} onPress={handleAdd}>
-							<Text style={globalStyle.buttonText}>Add</Text>
-						</TouchableOpacity>
+						<ActionButton onPress={handleCancel} text={"Cancel"} />
+						<ActionButton onPress={handleAdd} text={"Add"} />
 					</View>
 				</View>
 			</View>

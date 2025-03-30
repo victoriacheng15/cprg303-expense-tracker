@@ -32,6 +32,7 @@ export const globalStyle = StyleSheet.create({
 	modalTitle: {
 		fontSize: 18,
 		fontWeight: "bold",
+		marginBottom: 10,
 	},
 	modalText: {
 		fontSize: 16,
