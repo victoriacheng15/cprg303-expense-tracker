@@ -45,10 +45,10 @@ export default function TransactionModal() {
 					<Text style={globalStyle.modalTitle}>Add Transaction</Text>
 
 					{/* Name Input */}
-					<View style={styles.inputContainer}>
-						<Text style={styles.label}>Name:</Text>
+					<View style={globalStyle.inputContainer}>
+						<Text style={globalStyle.label}>Name:</Text>
 						<TextInput
-							style={styles.input}
+							style={globalStyle.input}
 							placeholder="Enter name"
 							value={name}
 							onChangeText={(value) => updateTransactionItem("name", value)}
@@ -56,10 +56,10 @@ export default function TransactionModal() {
 					</View>
 
 					{/* Amount Input */}
-					<View style={styles.inputContainer}>
-						<Text style={styles.label}>Amount:</Text>
+					<View style={globalStyle.inputContainer}>
+						<Text style={globalStyle.label}>Amount:</Text>
 						<TextInput
-							style={styles.input}
+							style={globalStyle.input}
 							placeholder="Enter amount"
 							value={String(amount)}
 							onChangeText={(value) => updateTransactionItem("amount", value)}
@@ -68,8 +68,8 @@ export default function TransactionModal() {
 					</View>
 
 					{/* Category Input */}
-					<View style={styles.inputContainer}>
-						<Text style={styles.label}>Category:</Text>
+					<View style={globalStyle.inputContainer}>
+						<Text style={globalStyle.label}>Category:</Text>
 						<CategoryDropdown
 							categories={categories}
 							loading={loading}
@@ -83,10 +83,10 @@ export default function TransactionModal() {
 					</View>
 
 					{/* Date Input */}
-					<View style={styles.inputContainer}>
-						<Text style={styles.label}>Date:</Text>
+					<View style={globalStyle.inputContainer}>
+						<Text style={globalStyle.label}>Date:</Text>
 						<TextInput
-							style={styles.input}
+							style={globalStyle.input}
 							placeholder="YYYY-MM-DD"
 							value={date}
 							editable={false}
@@ -105,10 +105,9 @@ export default function TransactionModal() {
 					)}
 
 					{/* Note Input */}
-					{/* <View style={styles.inputContainer}> */}
-					<Text style={styles.label}>Note (Optional):</Text>
+					<Text style={globalStyle.label}>Note (Optional):</Text>
 					<TextInput
-						style={styles.textarea}
+						style={globalStyle.textarea}
 						placeholder="Enter note"
 						value={note}
 						onChangeText={(value) => updateTransactionItem("note", value)}
@@ -135,31 +134,5 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		backgroundColor: "rgba(0, 0, 0, 0.5)",
-	},
-	label: {
-		fontSize: 14,
-		fontWeight: "500",
-		color: "#333",
-	},
-	inputContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		gap: 10,
-	},
-	input: {
-		flex: 1,
-		borderWidth: 1,
-		borderColor: "#ccc",
-		borderRadius: 5,
-		padding: 10,
-	},
-	textarea: {
-		height: 100,
-		borderWidth: 1,
-		borderColor: "#ccc",
-		borderRadius: 5,
-		padding: 10,
-		textAlignVertical: "top",
 	},
 });
