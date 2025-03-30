@@ -118,11 +118,7 @@ export default function TransactionItemModal({
 						>
 							<Text style={globalStyle.label}>Amount:</Text>
 							<TextInput
-								style={[
-									globalStyle.input,
-									!isEditing && styles.disabledInput,
-									{ textAlign: "right" },
-								]}
+								style={[globalStyle.input, !isEditing && styles.disabledInput]}
 								value={(transaction?.amount || 0).toFixed(2)}
 								onChangeText={(value) =>
 									setTransaction((prev) => ({
@@ -144,11 +140,7 @@ export default function TransactionItemModal({
 						>
 							<Text style={globalStyle.label}>Category:</Text>
 							<TextInput
-								style={[
-									globalStyle.input,
-									styles.disabledInput,
-									{ textAlign: "right" },
-								]}
+								style={[globalStyle.input, styles.disabledInput]}
 								value={transaction?.category_name}
 								editable={false}
 							/>
@@ -163,11 +155,7 @@ export default function TransactionItemModal({
 						>
 							<Text style={globalStyle.label}>Date:</Text>
 							<TextInput
-								style={[
-									globalStyle.input,
-									styles.disabledInput,
-									{ textAlign: "right" },
-								]}
+								style={[globalStyle.input, styles.disabledInput]}
 								value={
 									transaction?.date
 										? formatDate(new Date(transaction.date))
