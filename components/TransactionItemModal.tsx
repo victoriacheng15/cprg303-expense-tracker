@@ -5,13 +5,13 @@ import {
 	Text,
 	Modal,
 	ScrollView,
-	TouchableOpacity,
 	Alert,
 	TextInput,
 } from "react-native";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { globalStyle, colors } from "@/constants/";
+import ActionButton from "./ActionButton";
 
 export default function TransactionItemModal({
 	modalVisible,
@@ -28,6 +28,14 @@ export default function TransactionItemModal({
 		await updateTransaction(transaction);
 		setIsEditing(false);
 		getTransactions();
+	}
+
+	function HandleSave() {
+		if (isEditing) handleUpdate();
+	}
+
+	function handleCancel() {
+		setIsEditing(false);
 	}
 
 	async function hanadleDelete() {
@@ -66,9 +74,18 @@ export default function TransactionItemModal({
 		>
 			<View style={globalStyle.modalOverlay}>
 				<View style={globalStyle.modalContent}>
-					<Text style={globalStyle.modalTitle}>
-						{isEditing ? "Edit Transaction" : "Transaction Details"}
-					</Text>
+					<View style={styles.modalHeader}>
+						<Text style={globalStyle.modalTitle}>
+							{isEditing ? "Edit Transaction" : "Transaction Details"}
+						</Text>
+						{isEditing && (
+							<ActionButton
+								onPress={handleCancel}
+								icon="cancel"
+								iconColor={colors.accent.coral}
+							/>
+						)}
+					</View>
 					<ScrollView style={{ flexGrow: 1 }}>
 						{/* Name Input */}
 						<View style={styles.infoContainer}>
@@ -135,6 +152,9 @@ export default function TransactionItemModal({
 											note: value,
 										}))
 									}
+									multiline={true}
+									numberOfLines={4}
+									textAlignVertical="top"
 								/>
 							) : (
 								<Text>{transaction?.note || "No note available"}</Text>
@@ -142,39 +162,16 @@ export default function TransactionItemModal({
 						</View>
 					</ScrollView>
 					<View style={globalStyle.buttonContainer}>
-						<TouchableOpacity
-							onPress={() => {
-								setIsEditing(false);
-								setModalVisible(false);
-							}}
-							style={globalStyle.button}
-						>
-							<Text style={globalStyle.buttonText}>Close</Text>
-						</TouchableOpacity>
+						<ActionButton
+							onPress={() => setModalVisible(false)}
+							text={"Close"}
+						/>
 						{isEditing ? (
-							<TouchableOpacity
-								onPress={() => {
-									if (isEditing) handleUpdate();
-									setIsEditing(false);
-								}}
-								style={globalStyle.button}
-							>
-								<Text style={globalStyle.buttonText}>Save</Text>
-							</TouchableOpacity>
+							<ActionButton onPress={HandleSave} text={"Save"} />
 						) : (
-							<TouchableOpacity
-								onPress={() => setIsEditing(true)}
-								style={globalStyle.button}
-							>
-								<Text style={globalStyle.buttonText}>Edit</Text>
-							</TouchableOpacity>
+							<ActionButton onPress={() => setIsEditing(true)} text={"Edit"} />
 						)}
-						<TouchableOpacity
-							onPress={hanadleDelete}
-							style={globalStyle.button}
-						>
-							<Text style={globalStyle.buttonText}>Delete</Text>
-						</TouchableOpacity>
+						<ActionButton onPress={hanadleDelete} text={"Delete"} />
 					</View>
 				</View>
 			</View>
@@ -187,7 +184,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-		paddingVertical: 14,
+		paddingVertical: 12,
 		borderBottomWidth: 1,
 		borderBottomColor: colors.neutral.mediumGray,
 		gap: 16,
@@ -197,6 +194,13 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#ccc",
 		borderRadius: 5,
-		padding: 10,
+		paddingHorizontal: 8,
+	},
+	modalHeader: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		borderBottomWidth: 1,
+		borderBottomColor: colors.neutral.mediumGray,
 	},
 });
