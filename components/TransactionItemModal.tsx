@@ -88,77 +88,120 @@ export default function TransactionItemModal({
 					</View>
 					<ScrollView style={{ flexGrow: 1 }}>
 						{/* Name Input */}
-						<View style={styles.infoContainer}>
-							<Text style={globalStyle.modalText}>Name:</Text>
-							{isEditing ? (
-								<TextInput
-									style={styles.input}
-									value={transaction?.name}
-									onChangeText={(value) =>
-										setTransaction((prev) => ({ ...prev, name: value }))
-									}
-								/>
-							) : (
-								<Text>{transaction?.name}</Text>
-							)}
+						<View
+							style={[
+								globalStyle.inputContainer,
+								globalStyle.inputBorderBottom,
+							]}
+						>
+							<Text style={globalStyle.label}>Name:</Text>
+							<TextInput
+								style={[
+									globalStyle.input,
+									!isEditing && styles.disabledInput,
+									{ textAlign: "right" },
+								]}
+								value={transaction?.name}
+								onChangeText={(value) =>
+									setTransaction((prev) => ({ ...prev, name: value }))
+								}
+								editable={isEditing}
+							/>
 						</View>
 
 						{/* Amount Field */}
-						<View style={styles.infoContainer}>
-							<Text style={globalStyle.modalText}>Amount:</Text>
-							{isEditing ? (
-								<TextInput
-									style={styles.input}
-									value={String(transaction?.amount || 0)}
-									onChangeText={(value) =>
-										setTransaction((prev) => ({
-											...prev,
-											amount: Number(value),
-										}))
-									}
-									keyboardType="numeric"
-								/>
-							) : (
-								<Text>${transaction?.amount.toFixed(2)}</Text>
-							)}
+						<View
+							style={[
+								globalStyle.inputContainer,
+								globalStyle.inputBorderBottom,
+							]}
+						>
+							<Text style={globalStyle.label}>Amount:</Text>
+							<TextInput
+								style={[
+									globalStyle.input,
+									!isEditing && styles.disabledInput,
+									{ textAlign: "right" },
+								]}
+								value={(transaction?.amount || 0).toFixed(2)}
+								onChangeText={(value) =>
+									setTransaction((prev) => ({
+										...prev,
+										amount: Number(value),
+									}))
+								}
+								keyboardType="numeric"
+								editable={isEditing}
+							/>
 						</View>
 
 						{/* Category Field */}
-						<View style={styles.infoContainer}>
-							<Text style={globalStyle.modalText}>Category:</Text>
-							<Text>{transaction?.category_name}</Text>
+						<View
+							style={[
+								globalStyle.inputContainer,
+								globalStyle.inputBorderBottom,
+							]}
+						>
+							<Text style={globalStyle.label}>Category:</Text>
+							<TextInput
+								style={[
+									globalStyle.input,
+									styles.disabledInput,
+									{ textAlign: "right" },
+								]}
+								value={transaction?.category_name}
+								editable={false}
+							/>
 						</View>
 
 						{/* Date Field */}
-						<View style={styles.infoContainer}>
-							<Text style={globalStyle.modalText}>Date:</Text>
-							<Text>
-								{transaction?.date
-									? formatDate(new Date(transaction.date))
-									: "No date available"}
-							</Text>
+						<View
+							style={[
+								globalStyle.inputContainer,
+								globalStyle.inputBorderBottom,
+							]}
+						>
+							<Text style={globalStyle.label}>Date:</Text>
+							<TextInput
+								style={[
+									globalStyle.input,
+									styles.disabledInput,
+									{ textAlign: "right" },
+								]}
+								value={
+									transaction?.date
+										? formatDate(new Date(transaction.date))
+										: "No date available"
+								}
+								editable={false}
+							/>
 						</View>
 
 						{/* Note Field */}
-						<View style={styles.infoContainer}>
-							<Text style={globalStyle.modalText}>Note:</Text>
-							{isEditing ? (
-								<TextInput
-									style={styles.input}
-									value={transaction?.note || ""}
-									onChangeText={(value) =>
-										setTransaction((prev) => ({
-											...prev,
-											note: value,
-										}))
-									}
-									multiline={true}
-									numberOfLines={4}
-									textAlignVertical="top"
-								/>
-							) : (
-								<Text>{transaction?.note || "No note available"}</Text>
-							)}
+						<View
+							style={[
+								globalStyle.inputContainer,
+								globalStyle.inputBorderBottom,
+							]}
+						>
+							<Text style={globalStyle.label}>Note:</Text>
+							<TextInput
+								style={[
+									globalStyle.textarea,
+									!isEditing && styles.disabledInput,
+								]}
+								value={transaction?.note || ""}
+								onChangeText={(value) =>
+									setTransaction((prev) => ({
+										...prev,
+										note: value,
+									}))
+								}
+								multiline={true}
+								numberOfLines={4}
+								textAlignVertical="top"
+								editable={isEditing}
+							/>
 						</View>
 					</ScrollView>
 					<View style={globalStyle.buttonContainer}>
@@ -189,18 +232,14 @@ const styles = StyleSheet.create({
 		borderBottomColor: colors.neutral.mediumGray,
 		gap: 16,
 	},
-	input: {
-		flex: 1,
-		borderWidth: 1,
-		borderColor: "#ccc",
-		borderRadius: 5,
-		paddingHorizontal: 8,
-	},
 	modalHeader: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
 		borderBottomWidth: 1,
 		borderBottomColor: colors.neutral.mediumGray,
+	},
+	disabledInput: {
+		borderWidth: 0,
 	},
 });

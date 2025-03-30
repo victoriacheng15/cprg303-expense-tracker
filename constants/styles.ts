@@ -34,10 +34,6 @@ export const globalStyle = StyleSheet.create({
 		fontWeight: "bold",
 		marginBottom: 10,
 	},
-	modalText: {
-		fontSize: 16,
-		fontWeight: "bold",
-	},
 	buttonContainer: {
 		flexDirection: "row",
 		justifyContent: "space-around",
@@ -54,5 +50,37 @@ export const globalStyle = StyleSheet.create({
 		color: "#fff",
 		fontSize: 16,
 		fontWeight: "bold",
+	},
+	label: {
+		fontSize: 16,
+		fontWeight: "bold",
+		color: "#333",
+	},
+	inputContainer: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		gap: 10,
+	},
+	inputBorderBottom: {
+		paddingVertical: 6,
+		borderBottomWidth: 1,
+		borderBottomColor: colors.neutral.mediumGray,
+	},
+	input: {
+		flex: 1,
+		borderWidth: 1,
+		borderColor: colors.neutral.mediumGray,
+		borderRadius: 5,
+		paddingHorizontal: 8,
+		textAlign: "right",
+	},
+	textarea: {
+		height: 100,
+		borderWidth: 1,
+		borderColor: "#ccc",
+		borderRadius: 5,
+		paddingHorizontal: 8,
+		textAlignVertical: "top",
 	},
 });
