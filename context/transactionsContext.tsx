@@ -44,9 +44,9 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 
 	const [modalVisible, setModalVisible] = useState(false);
 	const [transactions, setTransactions] = useState<TransactionItem[]>([]);
+	const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 	const [datePickerConfig, setDatePickerConfig] =
 		useState<DatePickerConfig>(datePickerConfigObj);
-	const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 	const [transactionItem, setTransactionItem] =
 		useState<TransactionItem>(transactionObj);
 
@@ -54,8 +54,9 @@ export function TransactionsProvider({ children }: ChildrenProps) {
 	const incomeCategories = ["Salary", "Freelance", "Investment"];
 
 	async function getTransactions() {
+		setIsTransactionLoading(true);
+
 		try {
-			setIsTransactionLoading(true);
 			const { data: transactionsQuery, error } = await supabase
 				.from("expenses")
 				.select("*")

@@ -23,9 +23,9 @@ export default function Dashboard() {
 	} = useTransactionsContext();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const handleRefresh = useCallback(async () => {
+	const handleRefresh = useCallback(() => {
 		setRefreshing(true);
-		await getTransactions();
+		getTransactions();
 		setRefreshing(false);
 	}, [getTransactions]);
 
@@ -99,5 +99,6 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 18,
 		fontWeight: "semibold",
+		textAlign: "center",
 	},
 });
