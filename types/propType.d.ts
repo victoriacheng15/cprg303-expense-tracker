@@ -56,3 +56,13 @@ interface VisualizationFilterProps {
 		value: string | null,
 	) => void;
 }
+
+interface PieVisualizationProps {
+	data: {
+		name: string;
+		amount: number;
+		color: string;
+		legendFontColor: string;
+		legendFontSize: number;
+	}[];
+}
