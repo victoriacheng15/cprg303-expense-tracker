@@ -1,21 +1,21 @@
-import { useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import {
+	StyleSheet,
+	View,
+	Text,
+	KeyboardAvoidingView,
+	TouchableWithoutFeedback,
+	Keyboard,
+	ScrollView,
+	Platform,
+} from "react-native";
 import { Redirect } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSessionContext } from "@/context/sessionContext";
-import { useTransactionsContext } from "@/context/transactionsContext";
 import { globalStyle, colors } from "@/constants/";
 import Login from "@/components/Login";
 
 export default function App() {
 	const { session } = useSessionContext();
-	const { getTransactions } = useTransactionsContext();
-
-	useEffect(() => {
-		if (session) {
-			getTransactions();
-		}
-	}, [session]);
 
 	if (session) {
 		return <Redirect href="/(tabs)/dashboard" />;
@@ -23,53 +23,62 @@ export default function App() {
 
 	// If the user is not logged in, show the login screen
 	return (
-		<View style={globalStyle.container}>
-			<View style={styles.container}>
-				{/* Header with app icon and name */}
-				<View style={styles.header}>
-					<View style={styles.logoContainer}>
-						<MaterialIcons
-							style={{ marginRight: 10 }}
-							name="wallet"
-							size={30}
-							color="black"
-						/>
-						<Text style={styles.appName}>Expense Tracker</Text>
+		<KeyboardAvoidingView
+			behavior={Platform.OS === "ios" ? "padding" : "height"}
+			style={{ flex: 1 }}
+		>
+			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+				<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+					<View style={globalStyle.container}>
+						<View style={styles.container}>
+							{/* Header with app icon and name */}
+							<View style={styles.header}>
+								<View style={styles.logoContainer}>
+									<MaterialIcons
+										style={{ marginRight: 10 }}
+										name="wallet"
+										size={30}
+										color="black"
+									/>
+									<Text style={styles.appName}>Expense Tracker</Text>
+								</View>
+							</View>
+
+							{/* Hero section */}
+							<View style={styles.hero}>
+								<Text style={styles.title}>Take Control of Your Spending</Text>
+								<Text style={styles.subtitle}>
+									Track expenses, set budgets, and achieve your financial goals
+								</Text>
+							</View>
+
+							{/* Features grid */}
+							<View style={styles.features}>
+								<View style={styles.featureCard}>
+									<Text style={styles.featureTitle}>Visual Reports</Text>
+									<Text style={styles.featureText}>
+										Beautiful charts to understand your spending patterns
+									</Text>
+								</View>
+
+								<View style={styles.featureCard}>
+									<Text style={styles.featureTitle}>Smart Budgets</Text>
+									<Text style={styles.featureText}>
+										Set limits and get alerts when you're close
+									</Text>
+								</View>
+							</View>
+
+							{/* Login section */}
+							<View style={styles.authSection}>
+								<Text style={styles.authPrompt}>Ready to take control?</Text>
+								<Login />
+							</View>
+						</View>
 					</View>
-				</View>
-
-				{/* Hero section */}
-				<View style={styles.hero}>
-					<Text style={styles.title}>Take Control of Your Spending</Text>
-					<Text style={styles.subtitle}>
-						Track expenses, set budgets, and achieve your financial goals
-					</Text>
-				</View>
-
-				{/* Features grid */}
-				<View style={styles.features}>
-					<View style={styles.featureCard}>
-						<Text style={styles.featureTitle}>Visual Reports</Text>
-						<Text style={styles.featureText}>
-							Beautiful charts to understand your spending patterns
-						</Text>
-					</View>
-
-					<View style={styles.featureCard}>
-						<Text style={styles.featureTitle}>Smart Budgets</Text>
-						<Text style={styles.featureText}>
-							Set limits and get alerts when you're close
-						</Text>
-					</View>
-				</View>
-
-				{/* Login section */}
-				<View style={styles.authSection}>
-					<Text style={styles.authPrompt}>Ready to take control?</Text>
-					<Login />
-				</View>
-			</View>
-		</View>
+				</ScrollView>
+			</TouchableWithoutFeedback>
+		</KeyboardAvoidingView>
 	);
 }
 
