@@ -8,10 +8,13 @@ import {
 	Alert,
 	TextInput,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useTransactionsContext } from "@/context/transactionsContext";
 import { useFormatDate } from "@/hooks/useFormatDate";
+import { useGetCategories } from "@/hooks/useGetCategories";
 import { globalStyle, colors } from "@/constants/";
 import ActionButton from "./ActionButton";
+import CategoryDropdown from "./CategoyDropdown";
 
 export default function TransactionItemModal({
 	modalVisible,
@@ -21,8 +24,12 @@ export default function TransactionItemModal({
 	const { updateTransaction, deleteTransaction, getTransactions } =
 		useTransactionsContext();
 	const { formatDate } = useFormatDate();
+	const { categoryState, selectedCategory, setSelectedCategory } =
+		useGetCategories();
+	const { categories, loading, error } = categoryState;
 	const [isEditing, setIsEditing] = useState(false);
 	const [transaction, setTransaction] = useState(selectedTransaction);
+	const [showDate, setShowDate] = useState(false);
 
 	async function handleUpdate() {
 		await updateTransaction(transaction);
@@ -139,11 +146,28 @@ export default function TransactionItemModal({
 							]}
 						>
 							<Text style={globalStyle.label}>Category:</Text>
-							<TextInput
-								style={[globalStyle.input, styles.disabledInput]}
-								value={transaction?.category_name}
-								editable={false}
-							/>
+							{isEditing ? (
+								<CategoryDropdown
+									categories={categories}
+									loading={loading}
+									error={error}
+									selectedCategory={selectedCategory}
+									onSelect={(cat) => {
+										setSelectedCategory(cat);
+										setTransaction((prev) => ({ ...prev, category: cat.id }));
+									}}
+								/>
+							) : (
+								<Text
+									style={[
+										globalStyle.input,
+										styles.disabledInput,
+										{ paddingVertical: 8 },
+									]}
+								>
+									{transaction?.category_name || "No category"}
+								</Text>
+							)}
 						</View>
 
 						{/* Date Field */}
@@ -154,15 +178,51 @@ export default function TransactionItemModal({
 							]}
 						>
 							<Text style={globalStyle.label}>Date:</Text>
-							<TextInput
-								style={[globalStyle.input, styles.disabledInput]}
-								value={
-									transaction?.date
-										? formatDate(new Date(transaction.date))
-										: "No date available"
-								}
-								editable={false}
-							/>
+							{isEditing ? (
+								<>
+									<TextInput
+										style={globalStyle.input}
+										placeholder="YYYY-MM-DD"
+										value={
+											transaction?.date
+												? formatDate(new Date(transaction.date))
+												: "No date available"
+										}
+										editable={false}
+									/>
+									<ActionButton
+										onPress={() => setShowDate(true)}
+										text={"Select Date"}
+									/>
+									{showDate && (
+										<DateTimePicker
+											value={new Date(transaction?.date || Date.now())}
+											mode={"date"}
+											is24Hour={true}
+											display="default"
+											onChange={(event, date) => {
+												if (date) {
+													setTransaction((prev) => ({
+														...prev,
+														date: date.toISOString().split("T")[0],
+													}));
+												}
+												setShowDate(false);
+											}}
+										/>
+									)}
+								</>
+							) : (
+								<TextInput
+									style={[globalStyle.input, styles.disabledInput]}
+									value={
+										transaction?.date
+											? formatDate(new Date(transaction.date))
+											: "No date available"
+									}
+									editable={false}
+								/>
+							)}
 						</View>
 
 						{/* Note Field */}
