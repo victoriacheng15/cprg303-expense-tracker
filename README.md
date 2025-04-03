@@ -1,50 +1,25 @@
-# Welcome to your Expo app 👋
+# Expense Tracker App 💰
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile app powered by Supabase that helps users monitor spending with secure magic-link authentication. Developed as a school project to master real-world mobile development, this app includes:
+- 🔐 **Passwordless Login**: Secure magic-links via Supabase Auth  
+- 💸 **Transaction Tracking**: Log and view last 10 expenses  
+- 📈 **Data Visualization**: Monthly/yearly spending charts  
+- ⚙️ **Profile Management**: Update names or delete accounts  
 
-## Get started
+## 🛠 Tech Stacks
 
-1. Install dependencies
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6.svg?style=for-the-badge&logo=TypeScript&logoColor=white) ![React Native](https://img.shields.io/badge/React%20Native-61DAFB.svg?style=for-the-badge&logo=React&logoColor=black) ![Supabase](https://img.shields.io/badge/Supabase-3FCF8E.svg?style=for-the-badge&logo=Supabase&logoColor=white) ![PostgrreSQL](https://img.shields.io/badge/PostgreSQL-4169E1.svg?style=for-the-badge&logo=PostgreSQL&logoColor=white) ![Figma](https://img.shields.io/badge/Figma-F24E1E.svg?style=for-the-badge&logo=Figma&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=for-the-badge&logo=GitHub-Actions&logoColor=white)
 
-   ```bash
-   npm install
-   ```
+### Key Libraries
+- **Auth**: Supabase Magic Links
+- **Database**: Supabase PostgreSQL
+- **Charts**: React Native Chart Kit
+- **State Management**: React Context
 
-2. Start the app
+## 📸 Screenshots
 
-   ```bash
-    npx expo start
-   ```
+*Screenshots coming soon!* 👀
 
-In the output, you'll find options to open the app in a
+## 🎥 Demo
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+*Demo video coming soon!* 🎬
