@@ -18,8 +18,67 @@ A React Native mobile app powered by Supabase that helps users monitor spending 
 
 ## 📸 Screenshots
 
-*Screenshots coming soon!* 👀
+<details close>
+<summary>Click to see Landing Page</summary>
+
+### Before
+<img src="./media/before/landing-1.png" alt="Initial landing page design showing basic layout" width="200">
+<img src="./media/before/signup-1.png" alt="Initial signup page design with input fields and form layout" width="200">
+
+
+### After
+<img src="./media/after/landing-page.png" alt="Final landing page design with improved layout and visuals" width="200">
+
+
+</details>
+
+<details close>
+<summary>Click to see Dashboard Page</summary>
+
+### Before
+<img src="./media/before/dashboard-1.png" alt="Old dashboard showing a list of transactions" width="200">
+<img src="./media/before/dashboard_pop_up-1.png" alt="Old dashboard with an 'add transaction' modal popup" width="200">
+
+
+### After
+<img src="./media/after/dashboard.png" alt="Updated dashboard layout showing transaction summary" width="200">
+<img src="./media/after/dashbaord-add-item.png" alt="New dashboard design with 'add transaction' modal open" width="200">
+<img src="./media/after/dashboard-show-item.png" alt="New dashboard showing a transaction item in detail" width="200">
+<img src="./media/after/dashboard-edit-item.png" alt="New dashboard with 'edit transaction' modal open" width="200">
+
+
+</details>
+
+<details close>
+<summary>Click to see Visualization Page</summary>
+
+### Before
+<img src="./media/before/charts-1.png" alt="Old visualization page with simple chart layout" width="200">
+
+### After
+<img src="./media/after/visualization-monthly.png" alt="New monthly spending visualization with bar chart" width="200">
+<img src="./media/after/visualization-yearly.png" alt="New yearly spending visualization with line chart" width="200">
+
+</details>
+
+<details close>
+<summary>Click to see Settings Page</summary>
+
+### Before
+<img src="./media/before/settings-1.png" alt="Old settings page with basic input form included danger zone for account deletion" width="200">
+
+### After
+<img src="./media/after/settings-complete-profile.png" alt="Updated settings page prompting user to complete profile" width="200">
+<img src="./media/after/settings-input.png" alt="Settings page showing user input form fields" width="200">
+<img src="./media/after/settings-completed-profile.png" alt="Updated settings page with completed profile information" width="200">
+
+</details>
 
 ## 🎥 Demo
 
-*Demo video coming soon!* 🎬
+<details close>
+<summary>Click to see Demo Video</summary>
+
+<video src="./media/expense-tracker-demo.mp4" controls width="300"></video>
+
+</details>
