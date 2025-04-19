@@ -27,7 +27,7 @@ A React Native mobile app powered by Supabase that helps users monitor spending 
 
 
 ### After
-<img src="./media/after/landing-page.png" alt="Final landing page design with improved layout and visuals" width="200">
+<img src="./media/after/landing.png" alt="Final landing page design with improved layout and visuals" width="200">
 
 
 </details>
