@@ -76,9 +76,6 @@ A React Native mobile app powered by Supabase that helps users monitor spending 
 
 ## 🎥 Demo
 
-<details close>
-<summary>Click to see Demo Video</summary>
+Check out the video demo on YouTube:  
+👉 [https://www.youtube.com/shorts/IUMmoQ-PHQc](https://www.youtube.com/shorts/IUMmoQ-PHQc)
 
-<video src="./media/expense-tracker-demo.mp4" controls width="300"></video>
-
-</details>
