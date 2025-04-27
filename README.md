@@ -16,6 +16,22 @@ A React Native mobile app powered by Supabase that helps users monitor spending 
 - **Charts**: React Native Chart Kit
 - **State Management**: React Context
 
+## DevOps with GitHub Actions
+
+The project uses a GitHub Actions workflow to automatically check and fix code formatting using Biome when a pull request is made.
+
+### Format Workflow
+The Format Workflow runs automatically when a pull request is created for the main branch, and it changes `.tsx` and `.ts` files. It makes sure the code stays clean and properly formatted.
+
+Steps it does:
+- Checks out the pull request code.
+- Sets up Node.js version 20.
+- Installs project dependencies (using npm ci).
+- Runs the format script (using npm run format).
+- If any formatting changes happen, it automatically commits and pushes the changes back to the pull request.
+
+[Format Workflow](./.github/workflows/format.yml)
+
 ## 📸 Screenshots
 
 <details close>
